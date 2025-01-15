@@ -41,7 +41,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addDoctorModalLabel">Add Doctor</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" (click)="closeModal()" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- Add Doctor form here -->
@@ -50,16 +50,23 @@
                         <label for="doctorName" class="form-label">Name</label>
                         <input type="text" formControlName="doctorName" class="form-control" id="doctorName"
                             placeholder="Enter doctor name">
+                            <small *ngIf="addDoctorForm.get('doctorName')?.invalid && addDoctorForm.get('doctorName')?.touched" class="text-danger">Name is
+                                required</small>
                     </div>
                     <div class="mb-3">
                         <label for="doctorQualification" class="form-label">Qualification</label>
                         <input type="text" formControlName="doctorQualification" class="form-control"
                             id="doctorQualification" placeholder="Enter doctor qualification">
+                            <small *ngIf="addDoctorForm.get('doctorQualification')?.invalid && addDoctorForm.get('doctorQualification')?.touched"
+                                class="text-danger">Qualification is required</small>
                     </div>
                     <div class="mb-3">
                         <label for="doctorSpecialty" class="form-label">Specialty</label>
                         <input type="text" formControlName="doctorSpecialty" class="form-control" id="doctorSpecialty"
                             placeholder="Enter doctor specialty">
+                            <small *ngIf="addDoctorForm.get('doctorSpecialty')?.invalid && addDoctorForm.get('doctorSpecialty')?.touched"
+                                class="text-danger">Specialty is required</small>
+                            
                     </div>
                     <div class="mb-3">
                         <label for="doctorTimeSchedule" class="form-label">Time Schedule</label>
@@ -68,38 +75,53 @@
                                 From:
                                 <input type="time" formControlName="startTime" class="form-control" id="startTime"
                                     placeholder="Start Time">
+                                    <small *ngIf="addDoctorForm.get('startTime')?.invalid && addDoctorForm.get('startTime')?.touched"
+                                        class="text-danger">Start Time is required</small>
                             </div>
                             <div class="col-6">
                                 To:
                                 <input type="time" formControlName="endTime" class="form-control" id="endTime"
                                     placeholder="End Time">
+                                    <small *ngIf="addDoctorForm.get('endTime')?.invalid && addDoctorForm.get('endTime')?.touched" class="text-danger">End
+                                        Time is required</small>
                             </div>
                         </div>
+                        
+                       
                     </div>
                     <div class="mb-3">
                         <label for="doctorContactNumber" class="form-label">Contact Number</label>
-                        <input type="number" formControlName="doctorContactNumber" class="form-control"
+                        <input type="text" formControlName="doctorContactNumber" class="form-control"
                             id="doctorContactNumber" placeholder="Enter doctor contact number">
+                            <small *ngIf="addDoctorForm.get('doctorContactNumber')?.invalid && addDoctorForm.get('doctorContactNumber')?.touched"
+                                class="text-danger">Contact Number is required</small>
                     </div>
                     <div class="mb-3">
                         <label for="doctorAddress" class="form-label">Address</label>
                         <textarea formControlName="doctorAddress" class="form-control" id="doctorAddress" rows="3"
                             placeholder="Enter doctor address"></textarea>
+                            <small *ngIf="addDoctorForm.get('doctorAddress')?.invalid && addDoctorForm.get('doctorAddress')?.touched"
+                                class="text-danger">Address is required</small>
                     </div>
                     <div class="mb-3">
                         <label for="doctorImage" class="form-label">Doctor Image</label>
                         <input type="file" accept="image/*" formControlName="doctorImage" class="form-control" id="doctorImage">
+                        <small *ngIf="addDoctorForm.get('doctorImage')?.invalid && addDoctorForm.get('doctorImage')?.touched"
+                            class="text-danger">Doctor Image is required</small>
                     </div>
                     <div class="mb-3">
                         <label for="roomNo" class="form-label">Room No.</label>
                         <input type="number" formControlName="roomNo" class="form-control" id="roomNo"
                             placeholder="Enter room number">
+                            <small *ngIf="addDoctorForm.get('roomNo')?.invalid && addDoctorForm.get('roomNo')?.touched"
+                                class="text-danger">Contact Number is required</small>
+                            
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="onSubmit()">Add Doctor</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()"  [disabled]="addDoctorForm.invalid">Add Doctor</button>
             </div>
         </div>
     </div>

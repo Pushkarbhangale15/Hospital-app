@@ -37,5 +37,7 @@ export class HeaderComponent {
   }
   onSubmit() {
     console.log(this.addDoctorForm.value);
+    this.addDoctorForm.reset();
+
   }
 }
