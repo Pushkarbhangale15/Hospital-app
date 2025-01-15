@@ -1,0 +1,29 @@
+<!-- Navbar for dashboard  -->
+
+<nav class="navbar navbar-expand sticky-top navbar-dark bg-dark">
+    <!-- Navbar Brand-->
+    <div class="navbar-brand">
+        <i class="fas fa-user fa-fw ps-3"></i>
+        <span class="ps-3">Admin Dashboard</span>
+    </div>
+
+    <!-- Navs for dashboard -->
+    <ul class="navbar-nav justify-content-center text-white mx-auto ">
+        <li class="nav-item ps-3">
+            <button class="nav-link">Doctors Details</button>
+        </li>
+        <li class="nav-item ps-3">
+            <button class="nav-link">Patient Details</button>
+        </li>
+        <li class="nav-item ps-3">
+            <button class="nav-link">Reception Details</button>
+        </li>
+    </ul>
+
+    <!-- Logout Button -->
+    <ul class="navbar-nav ms-auto text-center text-white">
+        <li class="nav-item">
+            <button class="btn btn-primary" (click)="logout()">Logout</button>
+        </li>
+    </ul>
+</nav>

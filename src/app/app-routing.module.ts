@@ -3,7 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',redirectTo: 'user',pathMatch: 'full'
+    path: '',
+    redirectTo: 'user',
+    pathMatch: 'full',
   },
   {
     path: 'user',
@@ -12,6 +14,17 @@ const routes: Routes = [
         (m) => m.UserModuleModule
       ),
   },
+  {
+    path: 'admin',
+
+    loadChildren: () =>
+      import('./Modules/admin/admin.module').then((m) => m.AdminModule),
+  },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full',
+  }
 ];
 
 @NgModule({
