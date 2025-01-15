@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class DataService {
   
-  constructor(private http: HttpClient, private auth: AngularFireAuth,private firestore: AngularFirestore, private router: Router) {}
+  constructor(private http: HttpClient, private auth: AngularFireAuth, private router: Router) {}
   
 
   // Login method
