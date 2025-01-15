@@ -1,29 +1,106 @@
 <!-- Navbar for dashboard  -->
 
-<nav class="navbar navbar-expand sticky-top navbar-dark bg-dark">
+<nav class="navbar navbar-expand sticky-top navbar-dark bg-primary">
     <!-- Navbar Brand-->
     <div class="navbar-brand">
-        <i class="fas fa-user fa-fw ps-3"></i>
-        <span class="ps-3">Admin Dashboard</span>
+        <img src="../../../../assets/images/rod-of-asclepius.png" width="50" height="35" class="ps-3 " alt="">
+        <span class="ps-3">Doctors Cares Multispecialty Hospital</span>
     </div>
 
     <!-- Navs for dashboard -->
     <ul class="navbar-nav justify-content-center text-white mx-auto ">
-        <li class="nav-item ps-3">
-            <button class="nav-link">Doctors Details</button>
+        <li class="nav-item active dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Doctor Details
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addDoctorModal">Add Doctor</button></li>
+
+            </ul>
         </li>
         <li class="nav-item ps-3">
-            <button class="nav-link">Patient Details</button>
+            <button class="nav-link active">Patient Details</button>
         </li>
         <li class="nav-item ps-3">
-            <button class="nav-link">Reception Details</button>
+            <button class="nav-link active">Reception Details</button>
         </li>
     </ul>
 
     <!-- Logout Button -->
     <ul class="navbar-nav ms-auto text-center text-white">
-        <li class="nav-item">
-            <button class="btn btn-primary" (click)="logout()">Logout</button>
+        <li class="nav-item me-4">
+            <button class="btn btn-danger" (click)="logout()">Logout</button>
         </li>
     </ul>
 </nav>
+<!-- Add Doctor Modal -->
+<div class="modal fade" id="addDoctorModal" aria-labelledby="addDoctorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDoctorModalLabel">Add Doctor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Add Doctor form here -->
+                <form [formGroup]="addDoctorForm">
+                    <div class="mb-3">
+                        <label for="doctorName" class="form-label">Name</label>
+                        <input type="text" formControlName="doctorName" class="form-control" id="doctorName"
+                            placeholder="Enter doctor name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="doctorQualification" class="form-label">Qualification</label>
+                        <input type="text" formControlName="doctorQualification" class="form-control"
+                            id="doctorQualification" placeholder="Enter doctor qualification">
+                    </div>
+                    <div class="mb-3">
+                        <label for="doctorSpecialty" class="form-label">Specialty</label>
+                        <input type="text" formControlName="doctorSpecialty" class="form-control" id="doctorSpecialty"
+                            placeholder="Enter doctor specialty">
+                    </div>
+                    <div class="mb-3">
+                        <label for="doctorTimeSchedule" class="form-label">Time Schedule</label>
+                        <div class="row">
+                            <div class="col-6">
+                                From:
+                                <input type="time" formControlName="startTime" class="form-control" id="startTime"
+                                    placeholder="Start Time">
+                            </div>
+                            <div class="col-6">
+                                To:
+                                <input type="time" formControlName="endTime" class="form-control" id="endTime"
+                                    placeholder="End Time">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="doctorContactNumber" class="form-label">Contact Number</label>
+                        <input type="number" formControlName="doctorContactNumber" class="form-control"
+                            id="doctorContactNumber" placeholder="Enter doctor contact number">
+                    </div>
+                    <div class="mb-3">
+                        <label for="doctorAddress" class="form-label">Address</label>
+                        <textarea formControlName="doctorAddress" class="form-control" id="doctorAddress" rows="3"
+                            placeholder="Enter doctor address"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="doctorImage" class="form-label">Doctor Image</label>
+                        <input type="file" accept="image/*" formControlName="doctorImage" class="form-control" id="doctorImage">
+                    </div>
+                    <div class="mb-3">
+                        <label for="roomNo" class="form-label">Room No.</label>
+                        <input type="number" formControlName="roomNo" class="form-control" id="roomNo"
+                            placeholder="Enter room number">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Add Doctor</button>
+            </div>
+        </div>
+    </div>
+</div>
