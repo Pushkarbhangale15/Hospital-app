@@ -1,51 +1,43 @@
-<div id="layoutAuthentication_content" class="min-vh-100 d-flex align-items-center justify-content-center">
-    <main class="w-100">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-5 col-md-8 col-sm-10">
-                    <div class="card shadow-lg border-0 rounded-lg mt-5">
-                        <div class="card-header">
-                            <h3 class="text-center font-weight-light my-4">Login</h3>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-8 col-sm-10">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header">
+                    <h3 class="text-center font-weight-light my-4">Login</h3>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="LoginForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group form-floating mb-3">
+                            <input type="email" class="form-control" formControlName="Email"
+                                [ngClass]="{'is-invalid': submitted && LoginForm.controls['Email'].errors}"
+                                id="inputEmail" placeholder="name@example.com">
+                            <label for="inputEmail">Email address</label>
+                            <div *ngIf="submitted && LoginForm.controls['Email'].errors" class="text-danger">
+                                <div *ngIf="LoginForm.controls['Email'].errors['required']">
+                                    Email is required
+                                </div>
+                                <div *ngIf="LoginForm.controls['Email'].errors['email']">
+                                    Email is not valid
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <form [formGroup]="LoginForm" (ngSubmit)="onSubmit()">
-                                <div class="form-group form-floating mb-3">
-                                    <input class="form-control" formControlName="Email" [ngClass]="{
-                      'is-invalid':
-                        submitted && LoginForm.controls['Email'].errors
-                    }" id="inputEmail" type="email" placeholder="name@example.com" />
-                                    <label for="inputEmail">Email address</label>
-                                    <div *ngIf="submitted && LoginForm.controls['Email'].errors" class="text-danger">
-                                        <div *ngIf="LoginForm.controls['Email'].errors['required']">
-                                            Email is required
-                                        </div>
-                                        <div *ngIf="LoginForm.controls['Email'].errors['email']">
-                                            Email is not valid
-                                        </div>
-                                    </div>
+                        <div class="form-group form-floating mb-3">
+                            <input type="password" class="form-control" formControlName="Password"
+                                [ngClass]="{'is-invalid': submitted && LoginForm.controls['Password'].errors}"
+                                id="inputPassword" placeholder="Password">
+                            <label for="inputPassword">Password</label>
+                            <div *ngIf="submitted && LoginForm.controls['Password'].errors" class="text-danger">
+                                <div *ngIf="LoginForm.controls['Password'].errors['required']">
+                                    Password is required
                                 </div>
-                                <div class="form-group form-floating mb-3">
-                                    <input class="form-control" formControlName="Password" [ngClass]="{
-                      'is-invalid':
-                        submitted && LoginForm.controls['Password'].errors
-                    }" id="inputPassword" type="password" placeholder="Password" />
-                                    <label for="inputPassword">Password</label>
-                                    <div *ngIf="submitted && LoginForm.controls['Password'].errors" class="text-danger">
-                                        <div *ngIf="LoginForm.controls['Password'].errors['required']">
-                                            Password is required
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                                    
-                                    <button class="btn btn-primary mx-auto" type="submit">Login</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
-                        
-                    </div>
+                        <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                            <button class="btn btn-primary mx-auto" type="submit">Login</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 </div>
