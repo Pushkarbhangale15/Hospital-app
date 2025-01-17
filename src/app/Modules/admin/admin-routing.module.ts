@@ -10,6 +10,29 @@ const routes: Routes = [
     path: 'dashboard',
     canActivate: [AuthGuard],
     component: DashboardComponent,
+    children: [
+      {
+        path: 'doctor',
+        loadChildren: () =>
+          import('../doctor/doctor-routing.module').then(
+            (m) => m.DoctorRoutingModule
+          ),
+      },
+      {
+        path: 'patient',
+        loadChildren: () =>
+          import('../patient/patient-routing.module').then(
+            (m) => m.PatientRoutingModule
+          ),
+      },
+      {
+        path: 'reception',
+        loadChildren: () =>
+          import('../reception/reception-routing.module').then(
+            (m) => m.ReceptionRoutingModule
+          ),
+      },
+    ],
   },
 ];
 

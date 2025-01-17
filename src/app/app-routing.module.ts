@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DoctorRoutingModule } from './Modules/doctor/doctor-routing.module';
 
 const routes: Routes = [
   {
@@ -20,15 +21,19 @@ const routes: Routes = [
     loadChildren: () =>
       import('./Modules/admin/admin.module').then((m) => m.AdminModule),
   },
+  
   {
     path: '**',
     redirectTo: '',
     pathMatch: 'full',
-  }
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes),
+   
+  ],
+
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
