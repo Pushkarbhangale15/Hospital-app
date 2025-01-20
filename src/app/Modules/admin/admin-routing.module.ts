@@ -3,6 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from '../../guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { DoctorComponent } from '../doctor/doctor/doctor.component';
+import { ReceptionComponent } from '../reception/reception/reception.component';
+import { PatientComponent } from '../patient/patient/patient.component';
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -12,25 +15,20 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [
       {
-        path: 'doctor',
-        loadChildren: () =>
-          import('../doctor/doctor-routing.module').then(
-            (m) => m.DoctorRoutingModule
-          ),
+        path: '',
+        component: DoctorComponent,
       },
       {
-        path: 'patient',
-        loadChildren: () =>
-          import('../patient/patient-routing.module').then(
-            (m) => m.PatientRoutingModule
-          ),
+        path: 'doc-detail',
+        component: DoctorComponent,
       },
       {
-        path: 'reception',
-        loadChildren: () =>
-          import('../reception/reception-routing.module').then(
-            (m) => m.ReceptionRoutingModule
-          ),
+        path: 'pat-detail',
+        component: PatientComponent,
+      },
+      {
+        path: 'recep-detail',
+        component: ReceptionComponent,
       },
     ],
   },

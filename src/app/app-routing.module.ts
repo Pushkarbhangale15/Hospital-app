@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DoctorRoutingModule } from './Modules/doctor/doctor-routing.module';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -21,7 +21,31 @@ const routes: Routes = [
     loadChildren: () =>
       import('./Modules/admin/admin.module').then((m) => m.AdminModule),
   },
-  
+  {
+    path: 'doctor',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./Modules/doctor/doctor-routing.module').then(
+        (m) => m.DoctorRoutingModule
+      ),
+  },
+  {
+    path: 'patient',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./Modules/patient/patient-routing.module').then(
+        (m) => m.PatientRoutingModule
+      ),
+  },
+  {
+    path: 'reception',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./Modules/reception/reception-routing.module').then(
+        (m) => m.ReceptionRoutingModule
+      ),
+  },
+
   {
     path: '**',
     redirectTo: '',

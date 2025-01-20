@@ -23,7 +23,7 @@
                 <!-- Doctor Details Dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link active py-2 py-lg-0" role="button" 
-                        routerLink="./doctor">
+                        routerLink="./doc-detail">
                         Doctor Details
                     </a>
                     <!-- <ul class="dropdown-menu dropdown-menu-dark text-center text-lg-start">
@@ -37,7 +37,7 @@
 
                 <!-- Patient Details Dropdown -->
                 <li class="nav-item dropdown ms-lg-3">
-                    <a class="nav-link active py-2 py-lg-0" role="button" routerLink="./patient">
+                    <a class="nav-link active py-2 py-lg-0" role="button" routerLink="./pat-detail">
                         Patient Details
                     </a>
                     <!-- <ul class="dropdown-menu dropdown-menu-dark text-center text-lg-start">
@@ -51,7 +51,7 @@
 
                 <!-- Reception Details -->
                 <li class="nav-item dropdown ms-lg-3">
-                    <a class="nav-link active py-2 py-lg-0" role="button" routerLink="./reception">
+                    <a class="nav-link active py-2 py-lg-0" role="button" routerLink="./recep-detail">
                         Reception Details
                     </a>
                     <!-- <ul class="dropdown-menu dropdown-menu-dark text-center text-lg-start">
@@ -94,7 +94,7 @@
     </div>
 </nav>
 <!-- Add Doctor Modal -->
-<div class="modal fade" id="addDoctorModal" aria-labelledby="addDoctorModalLabel" aria-hidden="true">
+ <!-- <div class="modal fade" id="addDoctorModal" aria-labelledby="addDoctorModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -108,7 +108,7 @@
                 <form [formGroup]="addDoctorForm" (ngSubmit)="onSubmit()">
                     <div class="row">
                         <div class="col-md-6">
-                            <!-- Personal Information -->
+                            Personal Information
                             <div class="mb-3">
                                 <label for="doctorName" class="form-label">Name</label>
                                 <input type="text" formControlName="doctorName" class="form-control" id="doctorName"
@@ -140,7 +140,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <!-- Contact Information -->
+                            Contact Information
                             <div class="mb-3">
                                 <label for="doctorContactNumber" class="form-label">Contact Number</label>
                                 <input type="text" formControlName="doctorContactNumber" class="form-control"
@@ -208,13 +208,14 @@
                     Close
                 </button>
                 <button type="button" class="btn btn-primary" (click)="onSubmit()"
-                    [disabled]="addDoctorForm.invalid || isSubmitting">
+                    [disabled]="addDoctorForm.invalid">
                     {{ isSubmitting ? 'Adding...' : 'Add Doctor' }}
                 </button>
             </div>
         </div>
     </div>
-</div>
+</div>  -->
+
 <!-- Add Patient Modal -->
 <div class="modal fade" id="addPatientModal" aria-labelledby="addPatientModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

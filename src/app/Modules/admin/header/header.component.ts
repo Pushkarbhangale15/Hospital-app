@@ -127,8 +127,8 @@ export class HeaderComponent {
     if (fileInput) {
       fileInput.value = '';
     }
-    this.addPatientForm.reset();
     this.addDoctorForm.reset();
+    this.addPatientForm.reset();
     const fileStaffInput = document.getElementById(
       'staffImage'
     ) as HTMLInputElement;
