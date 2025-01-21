@@ -10,7 +10,7 @@ export class DoctorComponent {
   addDoctorForm!: FormGroup;
   doctors: any[] = [];
   isEditing = false;
-  selectedDoctor: any={};
+  selectedDoctor: any = {};
   editedDoctor: any;
   filteredDoctors: any[] = [];
   isSubmitting = false;
@@ -69,14 +69,21 @@ export class DoctorComponent {
   onSubmit(): void {
     this.isSubmitting = true;
     if (this.isEditing) {
-      this.operateService
-        .updateDoctor(this.editedDoctor.id, this.addDoctorForm.value)
-        .subscribe(() => {
-          this.getDoctors();
-          this.isEditing = false;
-          this.isSubmitting = false;
-          this.addDoctorForm.reset();
-        });
+      if (confirm('Are you sure you want to update this doctor?')) {
+        this.operateService
+          .updateDoctor(this.editedDoctor.id, this.addDoctorForm.value)
+          .subscribe(() => {
+            this.getDoctors();
+            this.isEditing = false;
+            this.isSubmitting = false;
+            this.addDoctorForm.reset();
+            
+            
+            alert('Doctor updated successfully');
+          });
+      } else {
+        this.isSubmitting = false;
+      }
     } else {
       this.operateService
         .saveDoctorData(this.addDoctorForm.value)
@@ -113,9 +120,11 @@ export class DoctorComponent {
     });
   }
   deleteDoctor(doctor: any): void {
-    this.operateService.deleteDoctor(doctor.id).subscribe(() => {
-      this.getDoctors();
-    });
+    if (confirm('Are you sure you want to delete this doctor?')) {
+      this.operateService.deleteDoctor(doctor.id).subscribe(() => {
+        this.getDoctors();
+      });
+    }
   }
   onSearch(event: Event) {
     const searchValue = (event.target as HTMLInputElement).value;
@@ -124,7 +133,6 @@ export class DoctorComponent {
     );
   }
   viewDoctorModal(doctor: any) {
-    this.selectedDoctor=doctor;
+    this.selectedDoctor = doctor;
   }
 }
-

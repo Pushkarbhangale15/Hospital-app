@@ -14,7 +14,7 @@ export class TimePipe implements PipeTransform {
     const hours = parseInt(time[0]);
     const minutes = time[1];
     const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12;
+    const formattedHours = hours == 12? hours : hours % 12;
     return `${formattedHours}:${minutes} ${ampm}`;
   }
 }

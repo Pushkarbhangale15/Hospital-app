@@ -18,50 +18,69 @@
 
         <!-- getting the doctors list -->
        
-            <div class="col-md-6 col-lg-4" *ngFor="let doctor of filteredDoctors" >
-                <div class="card h-100 border-primary" (click)="viewDoctorModal(doctor)" data-bs-target="#viewDoctorModal" data-bs-toggle="modal">
-                    <div class="card-body">
-                        <!-- Existing doctor info section -->
-                        <div class="d-flex align-items-center mb-3">
-                            <img [src]="doctor.doctorImage" class="rounded-2 me-3" alt="Doctor" style="height: 70px;">
-                            <div>
-                                <h5 class="card-title mb-1">Dr. {{ doctor.doctorName }}</h5>
-                                <span class="badge"
-                                    [ngClass]="{'bg-success': doctor.isAvailable, 'bg-danger': !doctor.isAvailable}">
-                                    {{ doctor.isAvailable ? 'Available Today' : 'Not Available Today' }}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <strong>Qualification</strong>
-                                <p>{{ doctor.doctorQualification }}</p>
-                            </div>
-                            <div class="col-6">
-                                <strong>Speciality</strong>
-                                <p>{{ doctor.doctorSpecialty }}</p>
-                            </div>
-                            <div class="col-6">
-                                <strong>Time Schedule</strong>
-                                <p>{{ doctor.startTime | time }} - {{ doctor.endTime | time }}</p>
-                            </div>
-                            <div class="col-6">
-                                <strong>Contact</strong>
-                                <p>{{ doctor.doctorContactNumber }}</p>
-                            </div>
-                        </div>
-                        <!-- New buttons section -->
-                        <div class="d-flex justify-content-end mt-3 gap-2">
-                            <button class="btn btn-outline-primary btn-sm" (click)="editDoctor(doctor)" data-bs-target="#addDoctorModal" data-bs-toggle="modal">
-                                <i class="bi bi-pencil-square me-1"></i> Edit
+            <div class="col-md-6 col-lg-4" *ngFor="let doctor of filteredDoctors">
+                <div class="card h-100 border-primary">
+                    <!-- Main card content that opens the view modal -->
+                    <div class="card-body position-relative">
+                        <!-- Action buttons positioned absolutely in top-right corner -->
+                        <div class="position-absolute top-0 end-0 m-2 d-flex gap-2">
+                            <button class="btn btn-outline-primary btn-sm rounded-circle"
+                                (click)="editDoctor(doctor); $event.stopPropagation();" data-bs-target="#addDoctorModal"
+                                data-bs-toggle="modal">
+                                <i class="bi bi-pencil-square"></i>
                             </button>
-                            <button class="btn btn-outline-danger btn-sm" (click)="deleteDoctor(doctor)">
-                                <i class="bi bi-trash me-1"></i> Delete
+                            <button class="btn btn-outline-danger btn-sm rounded-circle"
+                                (click)="deleteDoctor(doctor); $event.stopPropagation();">
+                                <i class="bi bi-trash"></i>
                             </button>
+                        </div>
+            
+                        <!-- Clickable area for viewing doctor details -->
+                        <div class="cursor-pointer" (click)="viewDoctorModal(doctor)" data-bs-target="#viewDoctorModal"
+                            data-bs-toggle="modal">
+                            <!-- Doctor image and name section -->
+                            <div class="d-flex align-items-center mb-3">
+                                <img [src]="doctor.doctorImage" class="rounded-2 me-3" alt="Doctor"
+                                    style="height: 70px; object-fit: cover;">
+                                <div>
+                                    <h5 class="card-title mb-1">Dr. {{ doctor.doctorName }}</h5>
+                                    <span class="badge"
+                                        [ngClass]="{'bg-success': doctor.isAvailable, 'bg-danger': !doctor.isAvailable}">
+                                        {{ doctor.isAvailable ? 'Available Today' : 'Not Available Today' }}
+                                    </span>
+                                </div>
+                            </div>
+            
+                            <!-- Doctor information grid -->
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="p-2 bg-light rounded-3">
+                                        <strong class="d-block text-primary">Qualification</strong>
+                                        <small>{{ doctor.doctorQualification }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-2 bg-light rounded-3">
+                                        <strong class="d-block text-primary">Speciality</strong>
+                                        <small>{{ doctor.doctorSpecialty }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-2 bg-light rounded-3">
+                                        <strong class="d-block text-primary">Time Schedule</strong>
+                                        <small>{{ doctor.startTime | time }} - {{ doctor.endTime | time }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-2 bg-light rounded-3">
+                                        <strong class="d-block text-primary">Contact</strong>
+                                        <small>{{ doctor.doctorContactNumber }}</small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
             </div>
        
     </div>
@@ -190,7 +209,7 @@
                     Close
                 </button>
                 <button type="button" class="btn btn-primary" (click)="onSubmit()"
-                    [disabled]="addDoctorForm.invalid ">
+                    [disabled]="addDoctorForm.invalid " data-bs-dismiss="modal">
                     {{ isEditing ? 'Update' : 'Add Doctor' }}
                 </button>
             </div>
