@@ -38,10 +38,10 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'reception',
+    path: 'recipient',
     canActivate: [AuthGuard],
     loadChildren: () =>
-      import('./Modules/reception/reception-routing.module').then(
+      import('./Modules/recipient/recipient-routing.module').then(
         (m) => m.ReceptionRoutingModule
       ),
   },

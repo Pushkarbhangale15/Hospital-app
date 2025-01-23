@@ -4,8 +4,9 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from '../../guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DoctorComponent } from '../doctor/doctor/doctor.component';
-import { ReceptionComponent } from '../reception/reception/reception.component';
+
 import { PatientComponent } from '../patient/patient/patient.component';
+import { RecipientComponent } from '../recipient/recipient/recipient.component';
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -28,7 +29,7 @@ const routes: Routes = [
       },
       {
         path: 'recep-detail',
-        component: ReceptionComponent,
+        component: RecipientComponent,
       },
     ],
   },

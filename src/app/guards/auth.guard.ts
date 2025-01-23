@@ -5,33 +5,19 @@ import {
   RouterStateSnapshot,
   Router,
 } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private auth: AngularFireAuth, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    this.auth.authState.subscribe((user) => {
-      if (user) {
-        localStorage.setItem('token', 'true');
-        if (this.router.url === '/login') {
-          this.router.navigate(['/admin/home']);
-        }
-      } else {
-        localStorage.removeItem('token');
-        if (this.router.url !== '/register') {
-          this.router.navigate(['/admin/login']);
-        }
-      }
-    });
-
-    const isAuthenticated = this.auth.currentUser !== null;
+    const isAuthenticated = this.authService.isAuthenticated();
     const path = next.routeConfig?.path;
 
     // Allow access to public routes

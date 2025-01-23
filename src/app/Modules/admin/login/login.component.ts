@@ -39,14 +39,9 @@ export class LoginComponent {
   }
 
   login() {
-    this.authService
-      .login(this.LoginForm.value.Email, this.LoginForm.value.Password)
-      .then(() => {
-        localStorage.setItem('token', 'true');
-        this.router.navigate(['admin/dashboard']);
-      })
-      .catch((err) => {
-        alert('Something went wrong');
-      });
+    this.authService.login(
+      this.LoginForm.value.Email,
+      this.LoginForm.value.Password
+    );
   }
 }

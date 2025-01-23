@@ -1,28 +1,37 @@
-
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  constructor(private auth: AngularFireAuth, private router: Router) {
-    this.auth.setPersistence('local'); // Set persistence to LOCAL
-  }
+  constructor(private router: Router) {}
+
+  private adminCredentials = {
+    email: 'admin@gmail.com',
+    password: 'admin123',
+  };
 
   login(email: string, password: string) {
-    return this.auth.signInWithEmailAndPassword(email, password);
+    // Check if the provided credentials match the admin credentials
+    if (
+      email === this.adminCredentials.email &&
+      password === this.adminCredentials.password
+    ) {
+      localStorage.setItem('token', 'true'); // Simulate token storage
+      this.router.navigate(['/admin/dashboard']);
+    } else {
+      alert('Invalid credentials'); // Log error for invalid credentials
+    }
   }
 
   logout() {
-    return this.auth.signOut().then(() => {
-      localStorage.removeItem('token');
-      this.router.navigate(['/admin/login']);
-    });
+    localStorage.removeItem('token');
+    this.router.navigate(['/admin/login']);
   }
 
   isAuthenticated(): boolean {
     return !!localStorage.getItem('token');
   }
 }
+
