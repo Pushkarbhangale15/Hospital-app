@@ -3,13 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
+
   {
     path: '',
-    redirectTo: 'user',
-    pathMatch: 'full',
-  },
-  {
-    path: 'user',
     loadChildren: () =>
       import('./Modules/user-module/user-module.module').then(
         (m) => m.UserModuleModule
@@ -42,7 +38,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () =>
       import('./Modules/recipient/recipient-routing.module').then(
-        (m) => m.ReceptionRoutingModule
+        (m) => m.RecipientRoutingModule
       ),
   },
 

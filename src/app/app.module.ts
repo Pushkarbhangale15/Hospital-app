@@ -1,22 +1,21 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { environment } from './environments/environment';
-import { UserModuleModule } from './Modules/user-module/user-module.module';
 import { DoctorModule } from './Modules/doctor/doctor.module';
-import { AngularFireModule } from '@angular/fire/compat';
+import { PatientModule } from './Modules/patient/patient.module';
+import { SharedModule } from './Modules/shared/shared.module'; // Import SharedModule
+import { UserModuleModule } from './Modules/user-module/user-module.module'
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    UserModuleModule,
-    DoctorModule, // Add this line
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
+    DoctorModule,
+    PatientModule,
+    SharedModule,
+    UserModuleModule, // Add SharedModule here
   ],
   providers: [],
   bootstrap: [AppComponent],
