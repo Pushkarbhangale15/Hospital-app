@@ -1,0 +1,13 @@
+.pagination li {
+  margin: 0;
+  padding: 0;
+}
+
+.pagination li a {
+  margin: 0;
+  padding: 8px 16px; /* adjust the padding to your liking */
+}
+
+.pagination :hover{
+ cursor: pointer;
+}

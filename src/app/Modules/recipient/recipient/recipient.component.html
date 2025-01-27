@@ -1,1 +1,136 @@
-<p>recipient works!</p>
+<!-- <div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>List of Recipient Details</h2>
+                <div class="d-flex align-items-center">
+                    <input type="search" class="form-control me-2" placeholder="Search" >
+                    <button class="btn btn-primary" style="white-space: nowrap;" data-bs-toggle="modal"
+                        data-bs-target="#addRecipientModal">Add New</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+Add Reception Modal
+<div class="modal fade" id="addRecipientModal" aria-labelledby="addRecipientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRecipientModalLabel">Add Details</h5>
+                <button type="button" class="btn-close" (click)="closeModal()" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addRecipientForm" (ngSubmit)="onRecipientSubmit()">
+                    <div class="row">
+                        Personal Information Column
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" formControlName="name"
+                                    placeholder="Enter staff name" [class.is-invalid]="isReceptionFieldInvalid('name')">
+                                <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('name')">
+                                    Name is required and must be at least 2 characters
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="contactNumber" class="form-label">Contact Number</label>
+                                <input type="text" class="form-control" id="contactNumber"
+                                    formControlName="contactNumber" placeholder="Enter contact number"
+                                    [class.is-invalid]="isReceptionFieldInvalid('contactNumber')">
+                                <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('contactNumber')">
+                                    Please enter a valid 10-digit contact number
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="qualification" class="form-label">Qualification</label>
+                                <input type="text" class="form-control" id="qualification"
+                                    formControlName="qualification" placeholder="Enter qualification"
+                                    [class.is-invalid]="isReceptionFieldInvalid('qualification')">
+                                <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('qualification')">
+                                    Qualification is required
+                                </div>
+                            </div>
+                        </div>
+
+                        Work Details Column
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Duty Timing</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <input type="time" class="form-control" formControlName="startTime"
+                                            [class.is-invalid]="isReceptionFieldInvalid('startTime')">
+                                        <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('startTime')">
+                                            Start time is required
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="time" class="form-control" formControlName="endTime"
+                                            [class.is-invalid]="isReceptionFieldInvalid('endTime')">
+                                        <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('endTime')">
+                                            End time is required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="joiningDate" class="form-label">Joining Date</label>
+                                <input type="date" class="form-control" id="joiningDate" formControlName="joiningDate"
+                                    [class.is-invalid]="isReceptionFieldInvalid('joiningDate')">
+                                <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('joiningDate')">
+                                    Joining date is required
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="retireDate" class="form-label">Retire Date</label>
+                                <input type="date" class="form-control" id="retireDate" formControlName="retireDate"
+                                    [class.is-invalid]="isReceptionFieldInvalid('retireDate')">
+                                <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('retireDate')">
+                                    Retire date is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    Full Width Fields
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="address" formControlName="address" rows="3"
+                            placeholder="Enter complete address"
+                            [class.is-invalid]="isReceptionFieldInvalid('address')">
+                </textarea>
+                        <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('address')">
+                            Address is required
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="staffImage" class="form-label"> Image</label>
+                        <input #fileInput type="file" class="form-control" id="staffImage"
+                            (change)="onFileChangeStaff($event)" accept="image/*"
+                            [class.is-invalid]="isReceptionFieldInvalid('staffImage')">
+                        <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('staffImage')">
+                            Image is required
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" (click)="onReceptionSubmit()"
+                    [disabled]="addReceptionForm.invalid">
+                Add Staff
+                </button>
+            </div>
+        </div>
+    </div>
+</div> -->

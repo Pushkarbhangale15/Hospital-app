@@ -68,31 +68,28 @@ export class DoctorComponent {
   }
   onSubmit(): void {
     this.isSubmitting = true;
-    if (this.isEditing) {
-      if (confirm('Are you sure you want to update this doctor?')) {
-        this.operateService
-          .updateDoctor(this.editedDoctor.id, this.addDoctorForm.value)
-          .subscribe(() => {
-            this.getDoctors();
-            this.isEditing = false;
-            this.isSubmitting = false;
-            this.addDoctorForm.reset();
-            
-            
-            alert('Doctor updated successfully');
-          });
-      } else {
-        this.isSubmitting = false;
-      }
-    } else {
-      this.operateService
-        .saveDoctorData(this.addDoctorForm.value)
-        .subscribe(() => {
-          this.getDoctors();
-          this.isSubmitting = false;
-          this.addDoctorForm.reset();
-        });
+    const action = this.isEditing ? 'update' : 'save';
+    const method = this.isEditing
+      ? this.operateService.updateDoctor(
+          this.editedDoctor.id,
+          this.addDoctorForm.value
+        )
+      : this.operateService.saveDoctorData(this.addDoctorForm.value);
+
+    if (
+      this.isEditing &&
+      !confirm('Are you sure you want to update this doctor?')
+    ) {
+      this.isSubmitting = false;
+      return;
     }
+
+    method.subscribe(() => {
+      this.getDoctors();
+      this.isSubmitting = false;
+      this.addDoctorForm.reset();
+      alert(`Doctor ${action}d successfully`);
+    });
   }
 
   getDoctors() {
