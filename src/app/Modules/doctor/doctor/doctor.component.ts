@@ -9,7 +9,9 @@ import { OperateService } from 'src/app/services/operate.service'; // Import the
 export class DoctorComponent {
   addDoctorForm!: FormGroup;
   doctors: any[] = [];
+  todayDate: string="";
   isEditing = false;
+
   selectedDoctor: any = {};
   editedDoctor: any;
   filteredDoctors: any[] = [];
@@ -20,6 +22,7 @@ export class DoctorComponent {
   ) {}
   ngOnInit(): void {
     this.getDoctors();
+    this.todayDate = new Date().toISOString().split('T')[0];
 
     this.addDoctorForm = this.fb.group({
       doctorName: ['', [Validators.required, Validators.minLength(2)]],
@@ -76,6 +79,17 @@ export class DoctorComponent {
         )
       : this.operateService.saveDoctorData(this.addDoctorForm.value);
 
+
+      const doctorRecord = {
+        doctorName: this.addDoctorForm.value.doctorName,
+        date: this.todayDate,
+        isAvailable: this.addDoctorForm.value.isAvailable,
+      };
+      this.operateService.addDoctorRecord(doctorRecord).subscribe(() => {
+        console.log('Doctor record added successfully');
+      });
+
+      
     if (
       this.isEditing &&
       !confirm('Are you sure you want to update this doctor?')
@@ -83,12 +97,13 @@ export class DoctorComponent {
       this.isSubmitting = false;
       return;
     }
-
+    
     method.subscribe(() => {
       this.getDoctors();
       this.isSubmitting = false;
       this.addDoctorForm.reset();
       alert(`Doctor ${action}d successfully`);
+
     });
   }
 

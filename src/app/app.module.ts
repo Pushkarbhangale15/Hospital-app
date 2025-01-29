@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DoctorModule } from './Modules/doctor/doctor.module';
 import { PatientModule } from './Modules/patient/patient.module';
+import { RecipientModule } from './Modules/recipient/recipient.module';
 import { SharedModule } from './Modules/shared/shared.module'; // Import SharedModule
 import { UserModuleModule } from './Modules/user-module/user-module.module'
 
@@ -14,6 +15,7 @@ import { UserModuleModule } from './Modules/user-module/user-module.module'
     AppRoutingModule,
     DoctorModule,
     PatientModule,
+    RecipientModule,
     SharedModule,
     UserModuleModule, // Add SharedModule here
   ],

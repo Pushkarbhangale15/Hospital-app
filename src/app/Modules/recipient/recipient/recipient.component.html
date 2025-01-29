@@ -1,10 +1,10 @@
-<!-- <div class="container mt-4">
+<div class="container mt-4">
     <div class="row mb-4">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <h2>List of Recipient Details</h2>
                 <div class="d-flex align-items-center">
-                    <input type="search" class="form-control me-2" placeholder="Search" >
+                    <input type="search" class="form-control me-2" placeholder="Search" (keyup)="onSearch($event)">
                     <button class="btn btn-primary" style="white-space: nowrap;" data-bs-toggle="modal"
                         data-bs-target="#addRecipientModal">Add New</button>
                 </div>
@@ -12,8 +12,70 @@
         </div>
     </div>
 
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4" *ngFor="let recipient of filteredRecipients">
+            <div class="card h-100 border-primary">
+                <div class="card-body position-relative">
+                    <!-- Action buttons -->
+                    <div class="position-absolute top-0 end-0 m-2 d-flex gap-2">
+                        <button class="btn btn-outline-primary btn-sm rounded-circle"
+                            (click)="editRecipient(recipient); $event.stopPropagation();"
+                            data-bs-target="#addRecipientModal" data-bs-toggle="modal">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm rounded-circle"
+                            (click)="deleteRecipient(recipient); $event.stopPropagation();">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+
+                    <!-- Clickable container -->
+                    <div class="cursor-pointer" (click)="viewRecipientModal(recipient)"
+                        data-bs-target="#viewRecipientModal" data-bs-toggle="modal">
+
+                        <!-- Profile section with improved layout -->
+                        <div class="d-flex align-items-start mb-3">
+                            <img [src]="recipient.staffImage" class="rounded-2 me-3" alt="recipient"
+                                style="height: 80px; object-fit: cover;">
+                            <div class="flex-grow-1 ms-2">
+                                <h5 class="card-title mb-2">{{ recipient.name }}</h5>
+                                <span class="badge mb-2"
+                                    [ngClass]="{'bg-success': recipient.isAvailable, 'bg-danger': !recipient.isAvailable}">
+                                    {{ recipient.isAvailable ? 'Available Today' : 'Not Available Today' }}
+                                </span>
+                               
+                            </div>
+                        </div>
+
+                        <!-- Contact and Time information -->
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="bg-light rounded-3 p-2">
+                                    <strong class="d-block text-primary">Qualification</strong>
+                                    <small>{{ recipient.qualification }}</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="bg-light rounded-3 p-2">
+                                    <strong class="d-block text-primary">Contact No.</strong>
+                                    <small>{{ recipient.contactNumber }}</small>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="bg-light rounded-3 p-2">
+                                    <strong class="d-block text-primary">Time Schedule</strong>
+                                    <small>{{ recipient.startTime | time }} - {{ recipient.endTime | time }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-Add Reception Modal
+
+<!-- Add Reception Modal -->
 <div class="modal fade" id="addRecipientModal" aria-labelledby="addRecipientModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -23,15 +85,15 @@ Add Reception Modal
                     aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="addRecipientForm" (ngSubmit)="onRecipientSubmit()">
+                <form [formGroup]="addRecipientForm" (ngSubmit)="onSubmit()">
                     <div class="row">
-                        Personal Information Column
+                        <!-- Personal Information Column -->
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" formControlName="name"
-                                    placeholder="Enter staff name" [class.is-invalid]="isReceptionFieldInvalid('name')">
-                                <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('name')">
+                                    placeholder="Enter staff name" [class.is-invalid]="isRecipientFieldInvalid('name')">
+                                <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('name')">
                                     Name is required and must be at least 2 characters
                                 </div>
                             </div>
@@ -40,8 +102,8 @@ Add Reception Modal
                                 <label for="contactNumber" class="form-label">Contact Number</label>
                                 <input type="text" class="form-control" id="contactNumber"
                                     formControlName="contactNumber" placeholder="Enter contact number"
-                                    [class.is-invalid]="isReceptionFieldInvalid('contactNumber')">
-                                <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('contactNumber')">
+                                    [class.is-invalid]="isRecipientFieldInvalid('contactNumber')">
+                                <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('contactNumber')">
                                     Please enter a valid 10-digit contact number
                                 </div>
                             </div>
@@ -50,29 +112,34 @@ Add Reception Modal
                                 <label for="qualification" class="form-label">Qualification</label>
                                 <input type="text" class="form-control" id="qualification"
                                     formControlName="qualification" placeholder="Enter qualification"
-                                    [class.is-invalid]="isReceptionFieldInvalid('qualification')">
-                                <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('qualification')">
+                                    [class.is-invalid]="isRecipientFieldInvalid('qualification')">
+                                <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('qualification')">
                                     Qualification is required
                                 </div>
                             </div>
+                            <div class="mb-3 form-check form-switch">
+                                <label class="form-check-label" for="isAvailable">Availability:</label>
+                                <input type="checkbox" class="form-check-input" id="isAvailable" formControlName="isAvailable" />
+                                <span>{{ addRecipientForm.get('isAvailable')?.value ? 'Available' : 'Unavailable' }}</span>
+                            </div>
                         </div>
 
-                        Work Details Column
+                        <!-- Work Details Column -->
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Duty Timing</label>
                                 <div class="row g-2">
                                     <div class="col-6">
                                         <input type="time" class="form-control" formControlName="startTime"
-                                            [class.is-invalid]="isReceptionFieldInvalid('startTime')">
-                                        <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('startTime')">
+                                            [class.is-invalid]="isRecipientFieldInvalid('startTime')">
+                                        <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('startTime')">
                                             Start time is required
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <input type="time" class="form-control" formControlName="endTime"
-                                            [class.is-invalid]="isReceptionFieldInvalid('endTime')">
-                                        <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('endTime')">
+                                            [class.is-invalid]="isRecipientFieldInvalid('endTime')">
+                                        <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('endTime')">
                                             End time is required
                                         </div>
                                     </div>
@@ -82,8 +149,8 @@ Add Reception Modal
                             <div class="mb-3">
                                 <label for="joiningDate" class="form-label">Joining Date</label>
                                 <input type="date" class="form-control" id="joiningDate" formControlName="joiningDate"
-                                    [class.is-invalid]="isReceptionFieldInvalid('joiningDate')">
-                                <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('joiningDate')">
+                                    [class.is-invalid]="isRecipientFieldInvalid('joiningDate')">
+                                <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('joiningDate')">
                                     Joining date is required
                                 </div>
                             </div>
@@ -91,32 +158,33 @@ Add Reception Modal
                             <div class="mb-3">
                                 <label for="retireDate" class="form-label">Retire Date</label>
                                 <input type="date" class="form-control" id="retireDate" formControlName="retireDate"
-                                    [class.is-invalid]="isReceptionFieldInvalid('retireDate')">
-                                <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('retireDate')">
+                                    [class.is-invalid]="isRecipientFieldInvalid('retireDate')">
+                                <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('retireDate')">
                                     Retire date is required
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
 
-                    Full Width Fields
+                    <!-- Full Width Fields -->
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
                         <textarea class="form-control" id="address" formControlName="address" rows="3"
                             placeholder="Enter complete address"
-                            [class.is-invalid]="isReceptionFieldInvalid('address')">
+                            [class.is-invalid]="isRecipientFieldInvalid('address')">
                 </textarea>
-                        <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('address')">
+                        <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('address')">
                             Address is required
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label for="staffImage" class="form-label"> Image</label>
-                        <input #fileInput type="file" class="form-control" id="staffImage"
+                        <input type="file" class="form-control" id="staffImage"
                             (change)="onFileChangeStaff($event)" accept="image/*"
-                            [class.is-invalid]="isReceptionFieldInvalid('staffImage')">
-                        <div class="invalid-feedback" *ngIf="isReceptionFieldInvalid('staffImage')">
+                            [class.is-invalid]="isRecipientFieldInvalid('staffImage')">
+                        <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('staffImage')">
                             Image is required
                         </div>
                     </div>
@@ -126,11 +194,98 @@ Add Reception Modal
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">
                     Close
                 </button>
-                <button type="button" class="btn btn-primary" (click)="onReceptionSubmit()"
-                    [disabled]="addReceptionForm.invalid">
+                <button type="button" class="btn btn-primary" (click)="onSubmit()"
+                    [disabled]="addRecipientForm.invalid">
                 Add Staff
                 </button>
             </div>
         </div>
     </div>
-</div> -->
+</div>
+
+<!-- Modal For viewing Recipient Data -->
+<div class="modal fade" id="viewRecipientModal" tabindex="-1" aria-labelledby="viewRecipientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="viewRecipientModalLabel">Recipient Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Recipient Profile Header -->
+                    <div class="col-12 mb-4">
+                        <div class="d-flex align-items-center">
+                            <img [src]="selectedRecipient.staffImage" class="rounded-circle me-4" alt="Recipient"
+                                style="height: 120px; width: 120px; object-fit: cover;">
+                            <div>
+                                <h4 class="mb-1">{{ selectedRecipient.name }}</h4>
+                                <span class="badge"
+                                    [ngClass]="{'bg-success': selectedRecipient.isAvailable, 'bg-danger': !selectedRecipient.isAvailable}">
+                                    {{ selectedRecipient.isAvailable ? 'Available Today' : 'Not Available Today' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Details -->
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-light mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title text-primary mb-3">Personal Information</h6>
+
+                                <div class="mb-3">
+                                    <label class="text-muted small">Qualification</label>
+                                    <p class="mb-2">{{ selectedRecipient.qualification }}</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="text-muted small">Joining Date</label>
+                                    <p class="mb-2">{{ selectedRecipient.joiningDate | date }}</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="text-muted small">Retire Date</label>
+                                    <p class="mb-2">{{ selectedRecipient.retireDate | date }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Details -->
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-light mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title text-primary mb-3">Contact Information</h6>
+
+                                <div class="mb-3">
+                                    <label class="text-muted small">Contact Number</label>
+                                    <p class="mb-2">{{ selectedRecipient.contactNumber }}</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="text-muted small">Address</label>
+                                    <p class="mb-2">{{ selectedRecipient.address }}</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="text-muted small">Duty Time</label>
+                                    <p class="mb-2">{{ selectedRecipient.startTime | time }} - {{ selectedRecipient.endTime | time }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="editRecipient(selectedRecipient)" 
+                        data-bs-target="#addRecipientModal" data-bs-toggle="modal">
+                    <i class="bi bi-pencil-square me-1"></i> Edit Details
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

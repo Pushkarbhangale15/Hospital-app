@@ -7,6 +7,8 @@ import { DoctorComponent } from '../doctor/doctor/doctor.component';
 
 import { PatientComponent } from '../patient/patient/patient.component';
 import { RecipientComponent } from '../recipient/recipient/recipient.component';
+import { RecipientRecordsComponent } from '../recipient/recipient-records/recipient-records.component';
+import { DoctorRecordsComponent } from '../doctor/doctor-records/doctor-records.component';
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -28,8 +30,16 @@ const routes: Routes = [
         component: PatientComponent,
       },
       {
-        path: 'recep-detail',
+        path: 'recip-detail',
         component: RecipientComponent,
+      },
+      {
+        path: 'recipient-records',
+        component: RecipientRecordsComponent,
+      },
+      {
+        path: 'doctor-records',
+        component: DoctorRecordsComponent,
       },
     ],
   },
