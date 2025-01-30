@@ -96,8 +96,10 @@ export class RecipientComponent {
     if (fileStaffInput) {
       fileStaffInput.value = '';
     }
+    this.isEditing = false;
     this.addRecipientForm.reset();
   }
+  // In RecipientComponent
   onSubmit(): void {
     this.isSubmitting = true;
     const action = this.isEditing ? 'update' : 'save';
@@ -107,16 +109,6 @@ export class RecipientComponent {
           this.addRecipientForm.value
         )
       : this.operatorService.saveRecipient(this.addRecipientForm.value);
-
-    const recipientRecord = {
-      name: this.addRecipientForm.value.name,
-      date: this.todayDate,
-      isAvailable: this.addRecipientForm.value.isAvailable,
-    };
-
-    this.operatorService.addRecipientRecord(recipientRecord).subscribe(() => {
-      console.log('Recipient record added successfully');
-    });
 
     if (
       this.isEditing &&
@@ -128,11 +120,45 @@ export class RecipientComponent {
 
     method.subscribe(() => {
       this.getRecipients();
+      const recipientName = this.addRecipientForm.value.name;
+      const today = this.todayDate;
+      const isAvailable = this.addRecipientForm.value.isAvailable;
+
+      // Check for existing attendance record
+      this.operatorService
+        .getRecipientRecordByNameAndDate(recipientName, today)
+        .subscribe((records) => {
+          if (records.length > 0) {
+            // Update existing record
+            const record = records[0];
+            record.isAvailable = isAvailable;
+            this.operatorService
+              .updateRecipientRecord(record.id, record)
+              .subscribe(() => {
+                console.log('Recipient attendance record updated');
+              });
+          } else {
+            // Create new record
+            const recipientRecord = {
+              name: recipientName,
+              date: today,
+              isAvailable: isAvailable,
+            };
+            this.operatorService
+              .addRecipientRecord(recipientRecord)
+              .subscribe(() => {
+                console.log('Recipient attendance record added');
+              });
+          }
+        });
+
       this.isSubmitting = false;
       this.addRecipientForm.reset();
       alert(`Recipient ${action}d successfully`);
     });
   }
+
+ 
   editRecipient(recipient: any): void {
     this.isEditing = true;
     this.editedRecipient = recipient;

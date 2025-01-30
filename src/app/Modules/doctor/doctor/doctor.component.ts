@@ -9,7 +9,7 @@ import { OperateService } from 'src/app/services/operate.service'; // Import the
 export class DoctorComponent {
   addDoctorForm!: FormGroup;
   doctors: any[] = [];
-  todayDate: string="";
+  todayDate: string = '';
   isEditing = false;
 
   selectedDoctor: any = {};
@@ -79,17 +79,6 @@ export class DoctorComponent {
         )
       : this.operateService.saveDoctorData(this.addDoctorForm.value);
 
-
-      const doctorRecord = {
-        doctorName: this.addDoctorForm.value.doctorName,
-        date: this.todayDate,
-        isAvailable: this.addDoctorForm.value.isAvailable,
-      };
-      this.operateService.addDoctorRecord(doctorRecord).subscribe(() => {
-        console.log('Doctor record added successfully');
-      });
-
-      
     if (
       this.isEditing &&
       !confirm('Are you sure you want to update this doctor?')
@@ -97,13 +86,42 @@ export class DoctorComponent {
       this.isSubmitting = false;
       return;
     }
-    
+
     method.subscribe(() => {
       this.getDoctors();
+      const doctorName = this.addDoctorForm.value.doctorName;
+      const today = this.todayDate;
+      const isAvailable = this.addDoctorForm.value.isAvailable;
+
+      // Check for existing attendance record for today
+      this.operateService
+        .getDoctorRecordByNameAndDate(doctorName, today)
+        .subscribe((records) => {
+          if (records.length > 0) {
+            // Update existing record
+            const record = records[0];
+            record.isAvailable = isAvailable;
+            this.operateService
+              .updateDoctorRecord(record.id, record)
+              .subscribe(() => {
+                console.log('Doctor attendance record updated');
+              });
+          } else {
+            // Create new record
+            const doctorRecord = {
+              doctorName: doctorName,
+              date: today,
+              isAvailable: isAvailable,
+            };
+            this.operateService.addDoctorRecord(doctorRecord).subscribe(() => {
+              console.log('Doctor attendance record added');
+            });
+          }
+        });
+
       this.isSubmitting = false;
       this.addDoctorForm.reset();
       alert(`Doctor ${action}d successfully`);
-
     });
   }
 

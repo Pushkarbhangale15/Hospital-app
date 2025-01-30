@@ -82,7 +82,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="addRecipientModalLabel">Add Details</h5>
                 <button type="button" class="btn-close" (click)="closeModal()" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                    aria-label="Close" ></button>
             </div>
             <div class="modal-body">
                 <form [formGroup]="addRecipientForm" (ngSubmit)="onSubmit()">
@@ -195,8 +195,8 @@
                     Close
                 </button>
                 <button type="button" class="btn btn-primary" (click)="onSubmit()"
-                    [disabled]="addRecipientForm.invalid">
-                Add Staff
+                    [disabled]="addRecipientForm.invalid" data-bs-dismiss="modal">
+               {{ isEditing ? 'Update' : 'Add' }} Details
                 </button>
             </div>
         </div>
@@ -209,7 +209,7 @@
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="viewRecipientModalLabel">Recipient Details</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
             </div>
 
             <div class="modal-body">
@@ -280,7 +280,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="editRecipient(selectedRecipient)" 
                         data-bs-target="#addRecipientModal" data-bs-toggle="modal">
                     <i class="bi bi-pencil-square me-1"></i> Edit Details
