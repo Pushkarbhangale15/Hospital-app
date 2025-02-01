@@ -36,7 +36,7 @@ export class DoctorComponent {
       ],
       doctorAddress: ['', Validators.required],
       doctorImage: ['', Validators.required],
-      isAvailable: [false], // Initialize the availability state
+
       roomNo: ['', [Validators.required, Validators.min(1)]],
     });
   }
@@ -69,6 +69,72 @@ export class DoctorComponent {
     this.isEditing = false;
     this.addDoctorForm.reset();
   }
+
+  getDoctors() {
+    this.operateService.getAllDoctors().subscribe((doctors) => {
+      this.doctors = doctors;
+      this.loadAttendanceRecords();
+    });
+  }
+
+  loadAttendanceRecords() {
+    this.operateService
+      .getDoctorRecordsByDate(this.todayDate)
+      .subscribe((records) => {
+        this.doctors.forEach((doctor) => {
+          const record = records.find(
+            (r: any) => r.doctorName === doctor.doctorName
+          );
+          doctor.todayAvailable = record?.isAvailable || false;
+          doctor.hasRecord = !!record;
+        });
+        this.filteredDoctors = [...this.doctors];
+      });
+  }
+
+  // modal trigger method
+  openAttendanceDialog(doctor: any) {
+    if (doctor.hasRecord) return;
+
+    // Set the modal text dynamically
+    const confirmTextElement = document.getElementById('confirmText');
+    if (confirmTextElement) {
+      confirmTextElement.innerText = `Set attendance for Dr. ${doctor.doctorName}?`;
+    }
+
+    // Get buttons and attach event listeners
+    const availableButton = document.getElementById(
+      'confirmButton'
+    ) as HTMLButtonElement;
+    const unavailableButton = document.getElementById(
+      'unavailableButton'
+    ) as HTMLButtonElement;
+
+    if (availableButton && unavailableButton) {
+      availableButton.onclick = () => this.toggleAvailability(doctor, true);
+      unavailableButton.onclick = () => this.toggleAvailability(doctor, false);
+      console.log('availableButton:', availableButton);
+      console.log('unavailableButton:', unavailableButton);
+    }
+  }
+
+  // Modified toggle method
+  toggleAvailability(doctor: any, status: boolean) {
+    console.log('toggleAvailability status:', status);
+    const record = {
+      doctorName: doctor.doctorName,
+      date: this.todayDate,
+      isAvailable: status,
+    };
+
+    this.operateService.addDoctorRecord(record).subscribe(() => {
+      doctor.todayAvailable = status;
+      doctor.hasRecord = true;
+      this.filteredDoctors = [...this.filteredDoctors]; // Trigger change detection
+    });
+   
+    console.log('toggleAvailability status:', status);
+  }
   onSubmit(): void {
     this.isSubmitting = true;
     const action = this.isEditing ? 'update' : 'save';
@@ -89,49 +155,12 @@ export class DoctorComponent {
 
     method.subscribe(() => {
       this.getDoctors();
-      const doctorName = this.addDoctorForm.value.doctorName;
-      const today = this.todayDate;
-      const isAvailable = this.addDoctorForm.value.isAvailable;
-
-      // Check for existing attendance record for today
-      this.operateService
-        .getDoctorRecordByNameAndDate(doctorName, today)
-        .subscribe((records) => {
-          if (records.length > 0) {
-            // Update existing record
-            const record = records[0];
-            record.isAvailable = isAvailable;
-            this.operateService
-              .updateDoctorRecord(record.id, record)
-              .subscribe(() => {
-                console.log('Doctor attendance record updated');
-              });
-          } else {
-            // Create new record
-            const doctorRecord = {
-              doctorName: doctorName,
-              date: today,
-              isAvailable: isAvailable,
-            };
-            this.operateService.addDoctorRecord(doctorRecord).subscribe(() => {
-              console.log('Doctor attendance record added');
-            });
-          }
-        });
-
       this.isSubmitting = false;
       this.addDoctorForm.reset();
       alert(`Doctor ${action}d successfully`);
     });
   }
 
-  getDoctors() {
-    this.operateService.getAllDoctors().subscribe((doctors) => {
-      console.log(doctors);
-      this.doctors = doctors;
-      this.filteredDoctors = this.doctors;
-    });
-  }
   // Function to edit a doctor
   editDoctor(doctor: any): void {
     this.isEditing = true;
@@ -144,7 +173,7 @@ export class DoctorComponent {
       endTime: doctor.endTime,
       doctorContactNumber: doctor.doctorContactNumber,
       doctorAddress: doctor.doctorAddress,
-      isAvailable: doctor.isAvailable,
+     
       doctorImage: doctor.doctorImage,
       roomNo: doctor.roomNo,
     });

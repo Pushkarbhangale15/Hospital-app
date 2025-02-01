@@ -73,6 +73,7 @@ export class PatientComponent {
   }
   closeModal() {
     this.addPatientForm.reset();
+     this.isEditing = false;
   }
 
   fetchPatients(): void {

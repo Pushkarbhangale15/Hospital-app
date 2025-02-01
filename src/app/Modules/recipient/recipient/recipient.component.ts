@@ -18,7 +18,7 @@ export class RecipientComponent {
   selectedRecipient: any = {}; // Property to hold the selected recipient
 
   constructor(
-    private operatorService: OperateService,
+    private operateService: OperateService,
     private fb: FormBuilder
   ) {}
 
@@ -38,7 +38,7 @@ export class RecipientComponent {
         endTime: ['', Validators.required],
         joiningDate: ['', Validators.required],
         retireDate: ['', Validators.required],
-        isAvailable: [false],
+        
         staffImage: [null, Validators.required],
       },
       {
@@ -83,10 +83,10 @@ export class RecipientComponent {
     }
   }
   getRecipients() {
-    this.operatorService.getAllRecipients().subscribe((recipients: any) => {
+    this.operateService.getAllRecipients().subscribe((recipients: any) => {
       console.log(recipients);
       this.recipients = recipients;
-      this.filteredRecipients = this.recipients;
+       this.loadAttendanceRecords();
     });
   }
   closeModal() {
@@ -96,19 +96,19 @@ export class RecipientComponent {
     if (fileStaffInput) {
       fileStaffInput.value = '';
     }
-    this.isEditing = false;
     this.addRecipientForm.reset();
+    this.isEditing = false;
   }
   // In RecipientComponent
   onSubmit(): void {
     this.isSubmitting = true;
     const action = this.isEditing ? 'update' : 'save';
     const method = this.isEditing
-      ? this.operatorService.updateRecipient(
+      ? this.operateService.updateRecipient(
           this.editedRecipient.id,
           this.addRecipientForm.value
         )
-      : this.operatorService.saveRecipient(this.addRecipientForm.value);
+      : this.operateService.saveRecipient(this.addRecipientForm.value);
 
     if (
       this.isEditing &&
@@ -120,42 +120,68 @@ export class RecipientComponent {
 
     method.subscribe(() => {
       this.getRecipients();
-      const recipientName = this.addRecipientForm.value.name;
-      const today = this.todayDate;
-      const isAvailable = this.addRecipientForm.value.isAvailable;
-
-      // Check for existing attendance record
-      this.operatorService
-        .getRecipientRecordByNameAndDate(recipientName, today)
-        .subscribe((records) => {
-          if (records.length > 0) {
-            // Update existing record
-            const record = records[0];
-            record.isAvailable = isAvailable;
-            this.operatorService
-              .updateRecipientRecord(record.id, record)
-              .subscribe(() => {
-                console.log('Recipient attendance record updated');
-              });
-          } else {
-            // Create new record
-            const recipientRecord = {
-              name: recipientName,
-              date: today,
-              isAvailable: isAvailable,
-            };
-            this.operatorService
-              .addRecipientRecord(recipientRecord)
-              .subscribe(() => {
-                console.log('Recipient attendance record added');
-              });
-          }
-        });
-
-      this.isSubmitting = false;
-      this.addRecipientForm.reset();
-      alert(`Recipient ${action}d successfully`);
+     this.isSubmitting = false;
+     this.addRecipientForm.reset();
+    alert(`Recipient ${action}d successfully`);
     });
+  }
+
+   loadAttendanceRecords() {
+    this.operateService
+      .getRecipientRecordsByDate(this.todayDate)
+      .subscribe((records) => {
+        this.recipients.forEach((recipient) => {
+          const record = records.find(
+            (r: any) => r.name === recipient.name
+          );
+          recipient.todayAvailable = record?.isAvailable || false;
+          recipient.hasRecord = !!record;
+        });
+        this.filteredRecipients = [...this.recipients];
+      });
+  }
+
+
+   openAttendanceDialog(recipient: any) {
+    if (recipient.hasRecord) return;
+
+    // Set the modal text dynamically
+    const confirmTextElement = document.getElementById('confirmText');
+    if (confirmTextElement) {
+      confirmTextElement.innerText = `Set attendance for ${recipient.name}?`;
+    }
+
+    // Get buttons and attach event listeners
+    const availableButton = document.getElementById(
+      'confirmButton'
+    ) as HTMLButtonElement;
+    const unavailableButton = document.getElementById(
+      'unavailableButton'
+    ) as HTMLButtonElement;
+
+    if (availableButton && unavailableButton) {
+      availableButton.onclick = () => this.toggleAvailability(recipient, true);
+      unavailableButton.onclick = () => this.toggleAvailability(recipient, false);
+      console.log('availableButton:', availableButton);
+      console.log('unavailableButton:', unavailableButton);
+    }
+  }
+   // Modified toggle method
+  toggleAvailability(recipient: any, status: boolean) {
+    console.log('toggleAvailability status:', status);
+    const record = {
+      name: recipient.name,
+      date: this.todayDate,
+      isAvailable: status,
+    };
+
+    this.operateService.addRecipientRecord(record).subscribe(() => {
+      recipient.todayAvailable = status;
+      recipient.hasRecord = true;
+      this.filteredRecipients = [...this.filteredRecipients]; // Trigger change detection
+    });
+   
+    console.log('toggleAvailability status:', status);
   }
 
  
@@ -171,13 +197,13 @@ export class RecipientComponent {
       endTime: recipient.endTime,
       joiningDate: recipient.joiningDate,
       retireDate: recipient.retireDate,
-      isAvailable: recipient.isAvailable,
+     
       staffImage: recipient.staffImage,
     });
   }
   deleteRecipient(recipient: any): void {
     if (confirm('Are you sure you want to delete this recipient?')) {
-      this.operatorService.deleteRecipient(recipient.id).subscribe(() => {
+      this.operateService.deleteRecipient(recipient.id).subscribe(() => {
         this.getRecipients();
       });
     }

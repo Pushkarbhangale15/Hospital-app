@@ -87,254 +87,262 @@
 
 
     <!-- Add Patient Modal -->
-    <div class="modal fade" id="addPatientModal" aria-labelledby="addPatientModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addPatientModalLabel">Add Patient</h5>
-                    <button type="button" class="btn-close" (click)="closeModal()" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form [formGroup]="addPatientForm" (ngSubmit)="onSubmit()">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="patientName" class="form-label">Name</label>
-                                <input type="text" formControlName="patientName" class="form-control" id="patientName"
-                                    placeholder="Enter patient name"
-                                    [class.is-invalid]="isPatientFieldInvalid('patientName')">
-                                <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('patientName')">
-                                    Name is required
-                                </div>
-                            </div>
+<div class="modal fade" id="addPatientModal" aria-labelledby="addPatientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white p-3">
+                <h5 class="modal-title fs-6" id="addPatientModalLabel">Add Patient</h5>
+                <button type="button" class="btn-close btn-close-white" (click)="closeModal()" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label for="contactNo" class="form-label">Contact No</label>
-                                <input type="text" formControlName="contactNo" class="form-control" id="contactNo"
-                                    placeholder="Enter contact number"
-                                    [class.is-invalid]="isPatientFieldInvalid('contactNo')">
-                                <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('contactNo')">
-                                    Contact number is required
-                                </div>
-                            </div>
-                        </div>
+            <div class="modal-body p-3">
+                <form [formGroup]="addPatientForm">
+                    <div class="row g-3">
+                        <!-- Personal Information -->
+                        <div class="col-md-6">
+                            <div class="bg-light rounded p-2">
+                                <h6 class="text-primary fs-6 mb-2">Personal Information</h6>
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label for="patientName" class="form-label small">Name</label>
+                                        <input type="text" formControlName="patientName"
+                                            class="form-control form-control-sm" id="patientName"
+                                            placeholder="Enter patient name"
+                                            [class.is-invalid]="isPatientFieldInvalid('patientName')">
+                                        <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('patientName')">
+                                            Name is required
+                                        </div>
+                                    </div>
 
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-                            <textarea formControlName="address" class="form-control" id="address" rows="3"
-                                placeholder="Enter patient address"
-                                [class.is-invalid]="isPatientFieldInvalid('address')">
-                        </textarea>
-                            <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('address')">
-                                Address is required
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="doctorName" class="form-label">Doctor Name for Treatment</label>
-                                <input type="text" formControlName="doctorName" class="form-control" id="doctorName"
-                                    placeholder="Enter doctor name"
-                                    [class.is-invalid]="isPatientFieldInvalid('doctorName')">
-                                <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('doctorName')">
-                                    Doctor name is required
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="bookingDate" class="form-label">Booking Date</label>
-                                <input type="date" formControlName="bookingDate" class="form-control" id="bookingDate"
-                                    [class.is-invalid]="isPatientFieldInvalid('bookingDate')">
-                                <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('bookingDate')">
-                                    Booking date is required
+                                    <div class="col-12">
+                                        <label for="contactNo" class="form-label small">Contact Number</label>
+                                        <input type="text" formControlName="contactNo"
+                                            class="form-control form-control-sm" id="contactNo"
+                                            placeholder="Enter contact number"
+                                            [class.is-invalid]="isPatientFieldInvalid('contactNo')">
+                                        <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('contactNo')">
+                                            Contact number is required
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="opdTime" class="form-label">OPD/Check up Time</label>
-                                <input type="time" formControlName="opdTime" class="form-control" id="opdTime">
+                        <!-- Treatment Information -->
+                        <div class="col-md-6">
+                            <div class="bg-light rounded p-2">
+                                <h6 class="text-primary fs-6 mb-2">Treatment Details</h6>
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label for="doctorName" class="form-label small">Doctor Name</label>
+                                        <input type="text" formControlName="doctorName"
+                                            class="form-control form-control-sm" id="doctorName"
+                                            placeholder="Enter doctor name"
+                                            [class.is-invalid]="isPatientFieldInvalid('doctorName')">
+                                        <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('doctorName')">
+                                            Doctor name is required
+                                        </div>
+                                    </div>
 
+                                    <div class="col-12">
+                                        <label for="bookingDate" class="form-label small">Booking Date</label>
+                                        <input type="date" formControlName="bookingDate"
+                                            class="form-control form-control-sm"
+                                            [class.is-invalid]="isPatientFieldInvalid('bookingDate')">
+                                        <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('bookingDate')">
+                                            Booking date is required
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label for="bookingBy" class="form-label">Booking by Recipient Name</label>
-                                <input type="text" formControlName="bookingBy" class="form-control" id="bookingBy"
-                                    placeholder="Enter booking by recipient name"
+                        <!-- Additional Details -->
+                        <div class="col-md-6">
+                            <div class="bg-light rounded p-2">
+                                <h6 class="text-primary fs-6 mb-2">Appointment Details</h6>
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label for="opdTime" class="form-label small">OPD/Check up Time</label>
+                                        <input type="time" formControlName="opdTime"
+                                            class="form-control form-control-sm" id="opdTime">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="feeStatus" class="form-label small">Fees Status</label>
+                                        <select formControlName="feeStatus" class="form-select form-select-sm"
+                                            [class.is-invalid]="isPatientFieldInvalid('feeStatus')">
+                                            <option value="">Select status</option>
+                                            <option value="Paid">Paid</option>
+                                            <option value="Pending">Pending</option>
+                                        </select>
+                                        <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('feeStatus')">
+                                            Fee status is required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Patient Type Section -->
+                        <div class="col-md-6">
+                            <div class="bg-light rounded p-2">
+                                <h6 class="text-primary fs-6 mb-2">Patient Type</h6>
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <select formControlName="patientType" class="form-select form-select-sm"
+                                            [class.is-invalid]="isPatientFieldInvalid('patientType')">
+                                            <option value="" disabled selected>Select patient type</option>
+                                            <option value="OPD">OPD</option>
+                                            <option value="IPD">IPD</option>
+                                        </select>
+                                        <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('patientType')">
+                                            Patient type is required
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12" *ngIf="addPatientForm.get('patientType')?.value === 'IPD'">
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label for="admitDate" class="form-label small">Admit Date</label>
+                                                <input type="date" formControlName="admitDate"
+                                                    class="form-control form-control-sm">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="dischargeDate" class="form-label small">Discharge
+                                                    Date</label>
+                                                <input type="date" formControlName="dischargeDate"
+                                                    class="form-control form-control-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Section -->
+                        <div class="col-12">
+                            <div class="bg-light rounded p-2">
+                                <label for="address" class="form-label small">Address</label>
+                                <textarea formControlName="address" class="form-control form-control-sm" id="address"
+                                    rows="2" placeholder="Enter patient address"
+                                    [class.is-invalid]="isPatientFieldInvalid('address')"></textarea>
+                                <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('address')">
+                                    Address is required
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Booking Information -->
+                        <div class="col-12">
+                            <div class="bg-light rounded p-2">
+                                <label for="bookingBy" class="form-label small">Booked By Recipient</label>
+                                <input type="text" formControlName="bookingBy" class="form-control form-control-sm"
+                                    id="bookingBy" placeholder="Enter recipient name"
                                     [class.is-invalid]="isPatientFieldInvalid('bookingBy')">
                                 <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('bookingBy')">
                                     Recipient name is required
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </form>
+            </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="feeStatus" class="form-label">Fees Status</label>
-                                <select formControlName="feeStatus" class="form-select" id="feeStatus"
-                                    [class.is-invalid]="isPatientFieldInvalid('feeStatus')">
-                                    <option value="">Select status</option>
-                                    <option value="Paid">Paid</option>
-                                    <option value="Pending">Pending</option>
-                                </select>
-                                <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('feeStatus')">
-                                    Fee status is required
-                                </div>
-                            </div>
-
-                            <!-- New Patient Type section -->
-                            <div class="col-md-6 mb-3">
-                                <label for="patientType" class="form-label">Patient Type</label>
-                                <select formControlName="patientType" class="form-control" id="patientType"
-                                    [class.is-invalid]="isPatientFieldInvalid('patientType')">
-                                    <option value="" disabled selected>Select patient type</option>
-                                    <option value="OPD">OPD</option>
-                                    <option value="IPD">IPD</option>
-                                </select>
-                                <div class="invalid-feedback" *ngIf="isPatientFieldInvalid('patientType')">
-                                    Patient type is required
-                                </div>
-                            </div>
-
-
-                        </div>
-
-                        <div class="row" *ngIf="addPatientForm.get('patientType')?.value === 'IPD'">
-                            <div class="col-md-6 mb-3">
-                                <label for="admitDate" class="form-label">Admit Date</label>
-                                <input type="date" formControlName="admitDate" class="form-control" id="admitDate"
-                                    *ngIf="addPatientForm.get('patientType')?.value === 'IPD'">
-
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="dischargeDate" class="form-label">Discharge Date</label>
-                                <input type="date" formControlName="dischargeDate" class="form-control"
-                                    id="dischargeDate">
-
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" (click)="closeModal()"
-                                data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">{{ isEditing ?
-                                'Update' :
-                                'Add Patient' }}</button>
-                        </div>
-                    </form>
-                </div>
+            <div class="modal-footer p-2">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" (click)="closeModal()">
+                    Close
+                </button>
+                <button type="submit" class="btn btn-primary btn-sm" [disabled]="addPatientForm.invalid"
+                    data-bs-dismiss="modal">
+                    {{ isEditing ? 'Update' : 'Add Patient' }}
+                </button>
             </div>
         </div>
     </div>
+</div>
     <!-- Patient Details Modal -->
-    <div class="modal fade" id="viewPatientModal" tabindex="-1" aria-labelledby="patientDetailsModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="patientDetailsModalLabel">Patient Details</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
+  <div class="modal fade" id="viewPatientModal" tabindex="-1" aria-labelledby="patientDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white p-3">
+                <h5 class="modal-title fs-6" id="patientDetailsModalLabel">Patient Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-                <div class="modal-body">
-                    <div class="row">
-                        <!-- Patient Header -->
-                        <div class="col-12 mb-4">
-                            <div>
-                                <h4 class="mb-1">{{selectedPatient.patientName}}</h4>
-                                <span class="badge"
-                                    [ngClass]="selectedPatient.patientType === 'IPD' ? 'bg-success' : 'bg-primary'">{{selectedPatient.patientType}}</span>
-                                <span class="badge ms-2"
-                                    [ngClass]="selectedPatient.feeStatus === 'Paid' ? 'bg-success' : 'badge bg-warning'">
-                                    {{selectedPatient.feeStatus}}
-                                </span>
-                            </div>
+            <div class="modal-body p-3">
+                <div class="row g-2">
+                    <!-- Patient Header -->
+                    <div class="col-12">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <h4 class="mb-0 fs-5">{{selectedPatient.patientName}}</h4>
+                            <span class="badge" 
+                                   [ngClass]="selectedPatient.patientType === 'IPD' ? 'bg-success' : 'bg-primary'">
+                                {{selectedPatient.patientType}}
+                            </span>
+                            <span class="badge" 
+                                   [ngClass]="selectedPatient.feeStatus === 'Paid' ? 'bg-success' : 'bg-warning'">
+                                {{selectedPatient.feeStatus}}
+                            </span>
                         </div>
+                    </div>
 
-                        <!-- Personal Details -->
-                        <div class="col-md-6">
-                            <div class="card border-0 bg-light mb-3">
-                                <div class="card-body">
-                                    <h6 class="card-title text-primary mb-3">Personal Information</h6>
+                    <!-- Details Sections -->
+                    <div class="col-md-6">
+                        <div class="bg-light rounded p-2">
+                            <h6 class="text-primary fs-6 mb-2">Personal Information</h6>
+                            <dl class="row g-1 mb-0">
+                                <dt class="col-5 text-muted small">Contact</dt>
+                                <dd class="col-7">{{selectedPatient.contactNo}}</dd>
 
-                                    <div class="mb-3">
-                                        <label class="text-muted small">Contact Number</label>
-                                        <p class="mb-2">{{selectedPatient.contactNo}}</p>
-                                    </div>
+                                <dt class="col-5 text-muted small">Address</dt>
+                                <dd class="col-7">{{selectedPatient.address}}</dd>
 
-                                    <div class="mb-3">
-                                        <label class="text-muted small">Address</label>
-                                        <p class="mb-2">{{selectedPatient.address}}</p>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="text-muted small">Booked By</label>
-                                        <p class="mb-2">{{selectedPatient.bookingBy}}</p>
-                                    </div>
-                                </div>
-                            </div>
+                                <dt class="col-5 text-muted small">Booked By</dt>
+                                <dd class="col-7">{{selectedPatient.bookingBy}}</dd>
+                            </dl>
                         </div>
+                    </div>
 
-                        <!-- Appointment Details -->
-                        <div class="col-md-6">
-                            <div class="card border-0 bg-light mb-3">
-                                <div class="card-body">
-                                    <h6 class="card-title text-primary mb-3">Appointment Information</h6>
+                    <div class="col-md-6">
+                        <div class="bg-light rounded p-2">
+                            <h6 class="text-primary fs-6 mb-2">Appointment Information</h6>
+                            <dl class="row g-1 mb-0">
+                                <dt class="col-5 text-muted small">Doctor</dt>
+                                <dd class="col-7">Dr. {{selectedPatient.doctorName}}</dd>
 
-                                    <div class="mb-3">
-                                        <label class="text-muted small">Doctor Name</label>
-                                        <p class="mb-2">Dr. {{selectedPatient.doctorName}}</p>
-                                    </div>
+                                <dt class="col-5 text-muted small">Booking Date</dt>
+                                <dd class="col-7">{{selectedPatient.bookingDate | date:'mediumDate'}}</dd>
 
-                                    <div class="mb-3">
-                                        <label class="text-muted small">Booking Date</label>
-                                        <p class="mb-2">{{selectedPatient.bookingDate | date:'mediumDate'}}</p>
-                                    </div>
-
-                                    <div class="mb-3" *ngIf="selectedPatient.patientType === 'OPD' ">
-                                        <label class="text-muted small">OPD Time</label>
-                                        <p class="mb-2">{{selectedPatient.opdTime | time}}</p>
-                                    </div>
-                                </div>
-                            </div>
+                                <dt class="col-5 text-muted small" *ngIf="selectedPatient.patientType === 'OPD'">OPD Time</dt>
+                                <dd class="col-7" *ngIf="selectedPatient.patientType === 'OPD'">{{selectedPatient.opdTime | time}}</dd>
+                            </dl>
                         </div>
+                    </div>
 
-                        <!-- IPD Specific Details -->
-                        <div class="col-12" *ngIf="selectedPatient.patientType === 'IPD'">
-                            <div class="card border-0 bg-light mb-3">
-                                <div class="card-body">
-                                    <h6 class="card-title text-primary mb-3">IPD Information</h6>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="text-muted small">Admit Date</label>
-                                                <p class="mb-2">{{selectedPatient.admitDate | date:'mediumDate'}}</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="text-muted small">Discharge Date</label>
-                                                <p class="mb-2">{{selectedPatient.dischargeDate | date:'mediumDate'}}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- IPD Details -->
+                    <div class="col-12" *ngIf="selectedPatient.patientType === 'IPD'">
+                        <div class="bg-light rounded p-2 mt-2">
+                            <h6 class="text-primary fs-6 mb-2">IPD Information</h6>
+                            <dl class="row g-1 mb-0">
+                                <dt class="col-3 text-muted small">Admit Date</dt>
+                                <dd class="col-3">{{selectedPatient.admitDate | date:'mediumDate'}}</dd>
+
+                                <dt class="col-3 text-muted small">Discharge Date</dt>
+                                <dd class="col-3">{{selectedPatient.dischargeDate | date:'mediumDate'}}</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                        (click)="closeModal()">Close</button>
-                    <button type="button" class="btn btn-primary" data-bs-target="#addPatientModal"
-                        data-bs-toggle="modal">
-                        <i class="bi bi-pencil-square me-1"></i> Edit Details
-                    </button>
-                </div>
+            <div class="modal-footer p-2">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-target="#addPatientModal" data-bs-toggle="modal">
+                    <i class="bi bi-pencil-square me-1"></i>Edit
+                </button>
             </div>
         </div>
     </div>
+</div>

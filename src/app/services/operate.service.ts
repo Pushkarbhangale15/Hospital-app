@@ -75,27 +75,12 @@ export class OperateService {
     return this.http.post(this.dbUrl + '/recipientRecords', recipientRecord);
   }
 
-  getDoctorRecordByNameAndDate(
-    doctorName: string,
-    date: string
-  ): Observable<any> {
-    return this.http.get(
-      `${this.dbUrl}/doctorRecords?doctorName=${doctorName}&date=${date}`
-    );
-  }
-
-  updateDoctorRecord(id: number, record: any): Observable<any> {
-    return this.http.put(`${this.dbUrl}/doctorRecords/${id}`, record);
-  }
-
   // In OperateService
-  getRecipientRecordByNameAndDate(name: string, date: string): Observable<any> {
-    return this.http.get(
-      `${this.dbUrl}/recipientRecords?name=${name}&date=${date}`
-    );
+  getRecipientRecordsByDate(date: string): Observable<any> {
+    return this.http.get(`${this.dbUrl}/recipientRecords?date=${date}`);
   }
 
-  updateRecipientRecord(id: number, record: any): Observable<any> {
-    return this.http.put(`${this.dbUrl}/recipientRecords/${id}`, record);
+  getDoctorRecordsByDate(date: string): Observable<any> {
+    return this.http.get(`${this.dbUrl}/doctorRecords?date=${date}`);
   }
 }
