@@ -24,7 +24,8 @@ export class RecipientComponent {
 
   ngOnInit(): void {
     this.getRecipients();
-    this.todayDate = new Date().toISOString().split('T')[0];
+    this.todayDate = new Date().toLocaleDateString('en-IN'); // or 'en-IN' for India
+   
     this.addRecipientForm = this.fb.group(
       {
         name: ['', [Validators.required, Validators.minLength(2)]],

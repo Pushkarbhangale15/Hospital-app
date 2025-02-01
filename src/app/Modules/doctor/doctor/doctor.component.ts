@@ -22,7 +22,7 @@ export class DoctorComponent {
   ) {}
   ngOnInit(): void {
     this.getDoctors();
-    this.todayDate = new Date().toISOString().split('T')[0];
+    this.todayDate = new Date().toLocaleDateString('en-IN'); // or 'en-IN' for India
 
     this.addDoctorForm = this.fb.group({
       doctorName: ['', [Validators.required, Validators.minLength(2)]],
