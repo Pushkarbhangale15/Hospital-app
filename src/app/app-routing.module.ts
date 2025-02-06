@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-
   {
     path: '',
     loadChildren: () =>
@@ -13,35 +12,24 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-
     loadChildren: () =>
       import('./Modules/admin/admin.module').then((m) => m.AdminModule),
   },
   {
-    path: 'doctor',
-    canActivate: [AuthGuard],
+    path: 'doctor-access',
     loadChildren: () =>
-      import('./Modules/doctor/doctor-routing.module').then(
-        (m) => m.DoctorRoutingModule
+      import('./Modules/doctor-access/doctor-access.module').then(
+        (m) => m.DoctorAccessModule
       ),
   },
   {
-    path: 'patient',
-    canActivate: [AuthGuard],
+    path: 'recipient-access',
     loadChildren: () =>
-      import('./Modules/patient/patient-routing.module').then(
-        (m) => m.PatientRoutingModule
+      import('./Modules/recipient-access/recipient-access.module').then(
+        (m) => m.RecipientAccessModule
       ),
   },
-  {
-    path: 'recipient',
-    canActivate: [AuthGuard],
-    loadChildren: () =>
-      import('./Modules/recipient/recipient-routing.module').then(
-        (m) => m.RecipientRoutingModule
-      ),
-  },
-
+  
   {
     path: '**',
     redirectTo: '',
@@ -50,10 +38,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes),
-   
-  ],
-
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

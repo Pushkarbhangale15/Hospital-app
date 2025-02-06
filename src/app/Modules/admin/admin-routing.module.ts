@@ -3,18 +3,20 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from '../../guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DoctorComponent } from '../doctor/doctor/doctor.component';
+import { DoctorComponent } from './doctor/doctor.component';
 
-import { PatientComponent } from '../patient/patient/patient.component';
-import { RecipientComponent } from '../recipient/recipient/recipient.component';
-import { RecipientRecordsComponent } from '../recipient/recipient-records/recipient-records.component';
-import { DoctorRecordsComponent } from '../doctor/doctor-records/doctor-records.component';
+import { PatientComponent } from './patient/patient.component';
+import { RecipientComponent } from './recipient/recipient.component';
+import { RecipientRecordsComponent } from './recipient-records/recipient-records.component';
+import { DoctorRecordsComponent } from './doctor-records/doctor-records.component';
+import { ProfileComponent } from './profile/profile.component';
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   {
     path: 'dashboard',
     canActivate: [AuthGuard],
+    data: { role: 'admin' },
     component: DashboardComponent,
     children: [
       {
@@ -41,6 +43,10 @@ const routes: Routes = [
         path: 'doctor-records',
         component: DoctorRecordsComponent,
       },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+      }
     ],
   },
 ];

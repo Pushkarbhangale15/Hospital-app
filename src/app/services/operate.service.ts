@@ -83,4 +83,11 @@ export class OperateService {
   getDoctorRecordsByDate(date: string): Observable<any> {
     return this.http.get(`${this.dbUrl}/doctorRecords?date=${date}`);
   }
+
+  // For admin profile 
+  fetchAdminProfile(): Observable<any> {
+    
+    return this.http.get(this.dbUrl + '/adminProfile');
+  }
+  
 }

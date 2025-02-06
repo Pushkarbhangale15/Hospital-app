@@ -1,0 +1,45 @@
+.profile-image-wrapper {
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.profile-image-wrapper:hover {
+    transform: scale(1.05);
+}
+
+.online-status {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.detail-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.detail-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.bg-primary-gradient {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+}
+
+.bg-primary-soft {
+    background-color: rgba(13, 110, 253, 0.1);
+}
+/* For aligning the image center on smaller screen*/
+@media (max-width: 991.98px) {
+  .profile-image-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}

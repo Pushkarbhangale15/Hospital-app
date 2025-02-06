@@ -1,0 +1,324 @@
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>List of Recipient Details</h2>
+                <div class="d-flex align-items-center">
+                    <input type="search" class="form-control me-2" placeholder="Search" (keyup)="onSearch($event)">
+                    <button class="btn btn-primary" style="white-space: nowrap;" data-bs-toggle="modal"
+                        data-bs-target="#addRecipientModal">Add New</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4" *ngFor="let recipient of filteredRecipients">
+            <div class="card h-100 border-primary">
+                <div class="card-body position-relative">
+                    <!-- Action buttons -->
+                    <div class="position-absolute top-0 end-0 m-2 d-flex gap-2">
+                        <button class="btn btn-outline-primary btn-sm rounded-circle"
+                            (click)="editRecipient(recipient); $event.stopPropagation();"
+                            data-bs-target="#addRecipientModal" data-bs-toggle="modal">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm rounded-circle"
+                            (click)="deleteRecipient(recipient); $event.stopPropagation();">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+
+                    <!-- Clickable container -->
+                    <div class="cursor-pointer" (click)="viewRecipientModal(recipient)"
+                        data-bs-target="#viewRecipientModal" data-bs-toggle="modal">
+
+                        <!-- Profile section with improved layout -->
+                        <div class="d-flex align-items-start mb-3">
+                            <img [src]="recipient.staffImage" class="rounded-2 me-3" alt="recipient"
+                                style="height: 70px; object-fit: cover;">
+                            <div>
+                                <h5 class="card-title mb-1">{{ recipient.name }}</h5>
+                               
+
+
+                                    <span class="badge" [ngClass]="{
+                                    'bg-success': recipient.hasRecord && recipient.todayAvailable,
+                                    'bg-danger': recipient.hasRecord && !recipient.todayAvailable,
+                                    'bg-secondary': !recipient.hasRecord
+                                  }">
+                                        {{ recipient.hasRecord ?
+                                        (recipient.todayAvailable ? 'Available' : 'Not Available') :
+                                        'Not Marked Attandance Yet' }}
+                                    </span>
+                                
+                            </div>
+                        </div>
+
+                        <!-- Contact and Time information -->
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="bg-light rounded-3 p-2">
+                                    <strong class="d-block text-primary">Qualification</strong>
+                                    <small>{{ recipient.qualification }}</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="bg-light rounded-3 p-2">
+                                    <strong class="d-block text-primary">Contact No.</strong>
+                                    <small>{{ recipient.contactNumber }}</small>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="bg-light rounded-3 p-2">
+                                    <strong class="d-block text-primary">Time Schedule</strong>
+                                    <small>{{ recipient.startTime | time }} - {{ recipient.endTime | time }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Add Reception Modal -->
+<div class="modal fade" id="addRecipientModal" aria-labelledby="addRecipientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white p-3">
+                <h5 class="modal-title fs-6" id="addRecipientModalLabel">Add Recipient</h5>
+                <button type="button" class="btn-close btn-close-white" (click)="closeModal()" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-3">
+                <form [formGroup]="addRecipientForm">
+                    <div class="row g-3">
+                        <!-- Staff Image Section -->
+                        <div class="col-12">
+                            <div class="bg-light rounded p-2">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div>
+                                        <label for="staffImage" class="form-label mb-2">Staff Image</label>
+                                        <input type="file" class="form-control form-control-sm" id="staffImage"
+                                            (change)="onFileChangeStaff($event)" accept="image/*"
+                                            [class.is-invalid]="isRecipientFieldInvalid('staffImage')">
+                                        <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('staffImage')">
+                                            Staff image is required
+                                        </div>
+                                    </div>
+                                    <img *ngIf="addRecipientForm.get('staffImage')?.value"
+                                        [src]="addRecipientForm.get('staffImage')?.value" class="rounded-3"
+                                        style="height: 60px; width: 60px; object-fit: cover;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Personal Information -->
+                        <div class="col-md-6">
+                            <div class="bg-light rounded p-2">
+                                <h6 class="text-primary fs-6 mb-2">Personal Information</h6>
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label for="name" class="form-label small">Name</label>
+                                        <input type="text" class="form-control form-control-sm" id="name"
+                                            formControlName="name" placeholder="Enter staff name"
+                                            [class.is-invalid]="isRecipientFieldInvalid('name')">
+                                        <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('name')">
+                                            Name is required and must be at least 2 characters
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="contactNumber" class="form-label small">Contact Number</label>
+                                        <input type="text" class="form-control form-control-sm" id="contactNumber"
+                                            formControlName="contactNumber" placeholder="Enter contact number"
+                                            [class.is-invalid]="isRecipientFieldInvalid('contactNumber')">
+                                        <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('contactNumber')">
+                                            Please enter a valid 10-digit contact number
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="qualification" class="form-label small">Qualification</label>
+                                        <input type="text" class="form-control form-control-sm" id="qualification"
+                                            formControlName="qualification" placeholder="Enter qualification"
+                                            [class.is-invalid]="isRecipientFieldInvalid('qualification')">
+                                        <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('qualification')">
+                                            Qualification is required
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Work Details -->
+                        <div class="col-md-6">
+                            <div class="bg-light rounded p-2">
+                                <h6 class="text-primary fs-6 mb-2">Work Details</h6>
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label class="form-label small">Duty Timing</label>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <input type="time" class="form-control form-control-sm"
+                                                    formControlName="startTime"
+                                                    [class.is-invalid]="isRecipientFieldInvalid('startTime')">
+                                                <div class="invalid-feedback"
+                                                    *ngIf="isRecipientFieldInvalid('startTime')">
+                                                    Start time is required
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="time" class="form-control form-control-sm"
+                                                    formControlName="endTime"
+                                                    [class.is-invalid]="isRecipientFieldInvalid('endTime')">
+                                                <div class="invalid-feedback"
+                                                    *ngIf="isRecipientFieldInvalid('endTime')">
+                                                    End time is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="joiningDate" class="form-label small">Joining Date</label>
+                                        <input type="date" class="form-control form-control-sm" id="joiningDate"
+                                            formControlName="joiningDate"
+                                            [class.is-invalid]="isRecipientFieldInvalid('joiningDate')">
+                                        <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('joiningDate')">
+                                            Joining date is required
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="retireDate" class="form-label small">Retire Date</label>
+                                        <input type="date" class="form-control form-control-sm" id="retireDate"
+                                            formControlName="retireDate"
+                                            [class.is-invalid]="isRecipientFieldInvalid('retireDate')">
+                                        <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('retireDate')">
+                                            Retire date is required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Section -->
+                        <div class="col-12">
+                            <div class="bg-light rounded p-2">
+                                <label for="address" class="form-label small">Address</label>
+                                <textarea class="form-control form-control-sm" id="address" formControlName="address"
+                                    rows="3" placeholder="Enter complete address"
+                                    [class.is-invalid]="isRecipientFieldInvalid('address')"></textarea>
+                                <div class="invalid-feedback" *ngIf="isRecipientFieldInvalid('address')">
+                                    Address is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer p-2">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" (click)="closeModal()">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" (click)="onSubmit()"
+                    [disabled]="addRecipientForm.invalid" data-bs-dismiss="modal">
+                    {{ isEditing ? 'Update' : 'Add Recipient' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal For viewing Recipient Data -->
+<div class="modal fade" id="viewRecipientModal" tabindex="-1" aria-labelledby="viewRecipientModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white p-3">
+                <h5 class="modal-title fs-6" id="viewRecipientModalLabel">Recipient Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeModal()"></button>
+            </div>
+
+            <div class="modal-body p-3">
+                <div class="row g-2">
+                    <!-- Recipient Header -->
+                    <div class="col-12">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <img [src]="selectedRecipient.staffImage" class="rounded-circle" alt="Recipient"
+                                style="height: 60px; width: 60px; object-fit: cover;">
+                            <div>
+                                <h4 class="mb-0 fs-5">{{ selectedRecipient.name }}</h4>
+                                <span class="badge ms-2" [ngClass]="{
+                                                                    'bg-success': selectedRecipient.hasRecord && selectedRecipient.todayAvailable,
+                                                                    'bg-danger': selectedRecipient.hasRecord && !selectedRecipient.todayAvailable,
+                                                                    'bg-secondary': !selectedRecipient.hasRecord
+                                                                }">
+                                    <span *ngIf="selectedRecipient.hasRecord">{{ selectedRecipient.todayAvailable ?
+                                        'Available' : 'Not Available' }}</span>
+                                    <span *ngIf="!selectedRecipient.hasRecord">Not Marked Attandance Yet</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Details -->
+                    <div class="col-md-6">
+                        <div class="bg-light rounded p-2">
+                            <h6 class="text-primary fs-6 mb-2">Professional Information</h6>
+                            <dl class="row g-1 mb-0">
+                                <dt class="col-5 text-muted small">Qualification</dt>
+                                <dd class="col-7">{{ selectedRecipient.qualification }}</dd>
+
+                                <dt class="col-5 text-muted small">Joining Date</dt>
+                                <dd class="col-7">{{ selectedRecipient.joiningDate | date }}</dd>
+
+                                <dt class="col-5 text-muted small">Retire Date</dt>
+                                <dd class="col-7">{{ selectedRecipient.retireDate | date }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <!-- Contact Details -->
+                    <div class="col-md-6">
+                        <div class="bg-light rounded p-2">
+                            <h6 class="text-primary fs-6 mb-2">Contact Information</h6>
+                            <dl class="row g-1 mb-0">
+                                <dt class="col-5 text-muted small">Contact Number</dt>
+                                <dd class="col-7">{{ selectedRecipient.contactNumber }}</dd>
+
+                                <dt class="col-5 text-muted small">Address</dt>
+                                <dd class="col-7">{{ selectedRecipient.address }}</dd>
+
+                                <dt class="col-5 text-muted small">Duty Time</dt>
+                                <dd class="col-7">{{ selectedRecipient.startTime | time }} - {{
+                                    selectedRecipient.endTime | time }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer p-2">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal" (click)="closeModal()">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" (click)="editRecipient(selectedRecipient)"
+                    data-bs-target="#addRecipientModal" data-bs-toggle="modal">
+                    <i class="bi bi-pencil-square me-1"></i>Edit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

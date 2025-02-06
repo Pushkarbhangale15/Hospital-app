@@ -1,0 +1,138 @@
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white p-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Recipient Profile</h5>
+                        <div class="form-check form-switch">
+                            <span class="badge bg-secondary" *ngIf="!recipientDetails?.hasRecord">
+                                Attendance Required
+                            </span>
+                            <span class="badge bg-success" *ngIf="recipientDetails?.hasRecord">
+                                Attendance Marked
+                            </span>
+                            
+                                <input class="form-check-input" [ngClass]="{'bg-dark': recipientDetails?.hasRecord}"
+                                    type="checkbox" role="switch" [checked]="recipientDetails?.todayAvailable"
+                                    (click)="openAttendanceDialog(recipientDetails, $event)"
+                                    [disabled]="recipientDetails?.hasRecord" id="attendanceToggle">
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-3">
+                    <!-- Recipient Header -->
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <img [src]="recipientDetails?.staffImage"
+                            class="rounded-circle border border-3 border-white shadow-sm" alt="Recipient Profile"
+                            style="height: 80px; width: 80px; object-fit: cover;">
+                        <div>
+                            <h4 class="mb-1">{{ recipientDetails?.name }}</h4>
+                            <div class="d-flex gap-2 align-items-center">
+                                <span class="badge" [ngClass]="recipientDetails?.hasRecord ? 
+                                    (recipientDetails?.todayAvailable ? 'bg-success' : 'bg-danger') : 'bg-secondary'">
+                                    <i class="bi"
+                                        [ngClass]="recipientDetails?.hasRecord ? 
+                                        (recipientDetails?.todayAvailable ? 'bi-check-circle me-1' : 'bi-x-circle me-1') : ''"></i>
+                                    {{ recipientDetails?.hasRecord ?
+                                    (recipientDetails?.todayAvailable ? 'Available' : 'Not Available') : 'Not Marked
+                                    Attendance' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Attendance Alert -->
+                    <div class="alert alert-warning mb-3" *ngIf="!recipientDetails?.hasRecord">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        Please mark your attendance for today using the toggle switch above.
+                    </div>
+
+                    <div class="row g-3">
+                        <!-- Professional Details -->
+                        <div class="col-md-6">
+                            <div class="bg-light rounded p-3">
+                                <h6 class="text-primary mb-3">
+                                    <i class="bi bi-person-vcard me-2"></i>
+                                    Professional Information
+                                </h6>
+                                <dl class="row g-2 mb-0">
+                                    <dt class="col-5 text-muted">Qualification</dt>
+                                    <dd class="col-7 mb-2">{{ recipientDetails?.qualification }}</dd>
+
+                                    <dt class="col-5 text-muted">Schedule</dt>
+                                    <dd class="col-7 mb-2">
+                                        {{ recipientDetails?.startTime | time }} - {{ recipientDetails?.endTime | time
+                                        }}
+                                    </dd>
+
+                                    <dt class="col-5 text-muted">Joining Date</dt>
+                                    <dd class="col-7 mb-0">
+                                        {{ recipientDetails?.joiningDate | date }}
+                                    </dd>
+
+                                    <dt class="col-5 text-muted">Retire Date</dt>
+                                    <dd class="col-7 mb-0">
+                                        {{ recipientDetails?.retireDate | date }}
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <!-- Contact Details -->
+                        <div class="col-md-6">
+                            <div class="bg-light rounded p-3">
+                                <h6 class="text-primary mb-3">
+                                    <i class="bi bi-telephone me-2"></i>
+                                    Contact Information
+                                </h6>
+                                <dl class="row g-2 mb-0">
+                                    <dt class="col-5 text-muted">Phone</dt>
+                                    <dd class="col-7 mb-2">{{ recipientDetails?.contactNumber }}</dd>
+
+                                    <dt class="col-5 text-muted">Address</dt>
+                                    <dd class="col-7">{{ recipientDetails?.address || 'Address not specified' }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light p-2">
+                    <div class="ms-auto">
+                        <small class="text-muted">
+                            <i class="bi bi-shield-lock me-1"></i>
+                            Authorized Access Only
+                        </small>
+                        <button type="button" class="btn btn-outline-danger btn-sm float-end" (click)="logout()">
+                            <i class="bi bi-x-lg me-1"></i>Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal (Same as doctor version, but will show recipient name) -->
+<div class="modal fade" id="openAttendanceDialog" tabindex="-1" aria-labelledby="customConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customConfirmLabel">Confirm Attendance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmText"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                    id="confirmButton">Available</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                    id="unavailableButton">Unavailable</button>
+            </div>
+        </div>
+    </div>
+</div>

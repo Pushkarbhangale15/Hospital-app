@@ -2,37 +2,41 @@ import { Injectable } from '@angular/core';
 import {
   CanActivate,
   ActivatedRouteSnapshot,
-  RouterStateSnapshot,
   Router,
 } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
+/**
+ * AuthGuard is a route guard that checks if a user is authenticated and has the correct role.
+ * If the user is not authenticated or does not have the correct role, they are redirected to the login page.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
-    const isAuthenticated = this.authService.isAuthenticated();
-    const path = next.routeConfig?.path;
+  /**
+   * Check if the user is authenticated and has the correct role.
+   * If the user is not authenticated or does not have the correct role, they are redirected to the login page.
+   *
+   * @param route The route being navigated to.
+   * @returns True if the user is authenticated and has the correct role, false otherwise.
+   */
+  canActivate(route: ActivatedRouteSnapshot): boolean {
+    const user = this.auth.getCurrentUser();
+    const expectedRole = route.data['role'];
+    console.log('User Role:', user?.role, 'Expected Role:', expectedRole);
 
-    // Allow access to public routes
-    const publicRoutes = ['login', 'register'];
-    if (publicRoutes.includes(path || '')) {
-      return true;
+    if (this.auth.isAuthenticated()) {
+      if (user?.role.toLowerCase() === expectedRole) {
+        return true;
+      } else {
+        this.auth.redirectAuthenticatedUser(); // Redirect authenticated users to their respective components
+      }
     }
 
-    // Check authentication for protected routes
-    if (isAuthenticated) {
-      return true;
-    }
-
-    // Redirect to login if not authenticated
-    this.router.navigate(['/admin/login']);
+    this.auth.logout();
     return false;
   }
 }

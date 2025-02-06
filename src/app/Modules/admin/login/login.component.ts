@@ -14,8 +14,7 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private formBuilder: FormBuilder,
-    private router: Router
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -24,8 +23,9 @@ export class LoginComponent {
       Password: ['', [Validators.required]],
     });
 
+    // Check if the user is already authenticated
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['admin/dashboard']);
+      this.authService.redirectAuthenticatedUser(); // Redirect to the appropriate component
     }
   }
 
@@ -39,9 +39,18 @@ export class LoginComponent {
   }
 
   login() {
-    this.authService.login(
-      this.LoginForm.value.Email,
-      this.LoginForm.value.Password
-    );
+    this.authService
+      .login(this.LoginForm.value.Email, this.LoginForm.value.Password)
+      .subscribe({
+        next: (user) => {
+          console.log('User:', user);
+          if (user) {
+            // Redirect based on user role is handled in AuthService
+          } else {
+            alert('Invalid credentials');
+          }
+        },
+        error: (err) => console.error('Login error:', err),
+      });
   }
 }
